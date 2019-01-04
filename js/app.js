@@ -11,6 +11,21 @@ const pieces = [
 ]
 
 const gameArr = [];
+for (let i = 0; i < 21; i++){
+    const arrayRow = [];
+    for (let j = 0; j < 11; j++){
+        arrayRow.push(0)
+    }
+    gameArr.push(arrayRow)
+}
+
+
+const lineFn = (index)=>{
+    for (let i = 3; i < 7; i++){
+        gameArr[index][i] = 1;
+    }
+    console.log(gameArr);
+}
 
 const game = {
     time: 0,
@@ -33,21 +48,19 @@ const makeGrid = ()=>{
         for (let x = 0; x < 11; x++){
             const $gridSquare = $('<div/>').addClass('col border grid-square').text(`${x},${i}`);
             $gridSquare.attr('coord', {x,i});
-            // $gridSquare.attr('x', x);
-            // $gridSquare.attr('y', i);
             $($gridRow).append($gridSquare);
-            gameArr.push($gridSquare.attr('coord'));
-            // console.log($gridSquare);
         }
     }
-    // console.log(gameArr);
 }
-
+let gameArrIndex = 0;
 const fallingPieces = ()=>{
     game.time++;
-    console.log(game.time);
+    gameArrIndex++;
+    lineFn(gameArrIndex);
+    
+
     // const randNum = Math.floor(Math.random()*(gameArr.length-1));
-    const $squarePiece = $('.grid-square')
+    // $('.grid-square').attr('style','background-color: black;')
     
 }
 
