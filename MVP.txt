@@ -1,0 +1,6 @@
+MVP:
+1) Make tetrad shapes
+2) have them fall down the screen at some speed
+3) Allow user to move piece laterally and rotate
+4) once a row is filled all the way across the screen, remove that row/make its dimensions equal to zero
+5) allow pieces to interlink
