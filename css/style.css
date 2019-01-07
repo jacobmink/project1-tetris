@@ -14,10 +14,12 @@
 
 .moving-piece{
     background: black;
+    border: 1px solid white;
 }
 
 .bottom-piece{
     background: black;
+    border: 1px solid blue;
 }
 
 .background-piece{

@@ -1,12 +1,3 @@
-const pieces = [
-    'line',
-    'square',
-    'tee',
-    'ess',
-    'zee',
-    'jay',
-    'el'
-]
 
 const gameArr = [];
 for (let i = 0; i < 21; i++){
@@ -17,12 +8,9 @@ for (let i = 0; i < 21; i++){
     gameArr.push(arrayRow)
 }
 
-class LinePiece {
-    constructor(){
-        this.occupiedSquares = [{'x': 5, 'y': 0},
-                                {'x': 6, 'y': 0},
-                                {'x': 7, 'y': 0},
-                                {'x': 8, 'y': 0}];
+class Piece {
+    constructor(coords){
+        this.occupiedSquares = coords;
     }
     render(){
         $('.moving-piece').removeClass('moving-piece');
@@ -31,17 +19,20 @@ class LinePiece {
         }
     }
     moveRight(){
-        if(this.occupiedSquares[3].x < 10){
-            this.occupiedSquares.forEach(function(element){
-                element['x']++;
-            })
-        }
+            if(this.occupiedSquares[3].x < 10 && 
+                !$(`.grid-square[x="${this.occupiedSquares[3].x + 1}"][y="${this.occupiedSquares[3].y}"]`).hasClass('bottom-piece'))
+                {
+                this.occupiedSquares.forEach(function(element){
+                    element.x++;
+                })
+            }
         this.render();
     }
     moveLeft(){
-        if(this.occupiedSquares[0].x > 0){
+        if(this.occupiedSquares[0].x > 0 && 
+            !$(`.grid-square[x="${this.occupiedSquares[3].x - 1}"][y="${this.occupiedSquares[3].y}"]`).hasClass('bottom-piece')){
             this.occupiedSquares.forEach(function(element){
-                element['x']--;
+                element.x--;
             })
         }
         this.render();
@@ -49,210 +40,40 @@ class LinePiece {
     
 }
 
-const linePiece = new LinePiece();
+const linePiece = new Piece([{'x': 5, 'y': 0},
+                            {'x': 6, 'y': 0},
+                            {'x': 7, 'y': 0},
+                            {'x': 8, 'y': 0}]);
 
-class SquarePiece {
-    constructor(){
-        this.occupiedSquares = [{'x': 5, 'y': 0},
+const squarePiece = new Piece([{'x': 5, 'y': 0},
                                 {'x': 6, 'y': 0},
                                 {'x': 5, 'y': 1},
-                                {'x': 6, 'y': 1}];
-    }
-    render(){
-        $('.moving-piece').removeClass('moving-piece');
-        for (let i = 0; i < this.occupiedSquares.length; i++){
-            $(`.grid-square[x="${this.occupiedSquares[i]['x']}"][y="${this.occupiedSquares[i]['y']}"]`).addClass('moving-piece');
-        }
-    }
-    moveRight(){
-        if(this.occupiedSquares[3].x < 10){
-            this.occupiedSquares.forEach(function(element){
-                element['x']++;
-            })
-        }
-        this.render();
-    }
-    moveLeft(){
-        if(this.occupiedSquares[0].x > 0){
-            this.occupiedSquares.forEach(function(element){
-                element['x']--;
-            })
-        }
-        this.render();
-    }
-}
+                                {'x': 6, 'y': 1}]);
 
-const squarePiece = new SquarePiece();
+const teePiece = new Piece([{'x': 5, 'y': 0},
+                            {'x': 6, 'y': 0},
+                            {'x': 6, 'y': 1},
+                            {'x': 7, 'y': 0}]);
 
-class TeePiece {
-    constructor(){
-        this.occupiedSquares = [{'x': 5, 'y': 0},
-                                {'x': 6, 'y': 0},
-                                {'x': 6, 'y': 1},
-                                {'x': 7, 'y': 0}];
-    }
-    render(){
-        $('.moving-piece').removeClass('moving-piece');
-        for (let i = 0; i < this.occupiedSquares.length; i++){
-            $(`.grid-square[x="${this.occupiedSquares[i]['x']}"][y="${this.occupiedSquares[i]['y']}"]`).addClass('moving-piece');
-        }
-    }
-    moveRight(){
-        if(this.occupiedSquares[3].x < 10){
-            this.occupiedSquares.forEach(function(element){
-                element['x']++;
-            })
-        }
-        this.render();
-    }
-    moveLeft(){
-        if(this.occupiedSquares[0].x > 0){
-            this.occupiedSquares.forEach(function(element){
-                element['x']--;
-            })
-        }
-        this.render();
-    }
-    
-}
+const essPiece = new Piece([{'x': 5, 'y': 1},
+                            {'x': 6, 'y': 0},
+                            {'x': 6, 'y': 1},
+                            {'x': 7, 'y': 0}]);
 
-const teePiece = new TeePiece();
+const zeePiece = new Piece([{'x': 5, 'y': 0},
+                            {'x': 6, 'y': 0},
+                            {'x': 6, 'y': 1},
+                            {'x': 7, 'y': 1}]);
 
-class EssPiece {
-    constructor(){
-        this.occupiedSquares = [{'x': 5, 'y': 1},
-                                {'x': 6, 'y': 0},
-                                {'x': 6, 'y': 1},
-                                {'x': 7, 'y': 0}];
-    }
-    render(){
-        $('.moving-piece').removeClass('moving-piece');
-        for (let i = 0; i < this.occupiedSquares.length; i++){
-            $(`.grid-square[x="${this.occupiedSquares[i]['x']}"][y="${this.occupiedSquares[i]['y']}"]`).addClass('moving-piece');
-        }
-    }
-    moveRight(){
-        if(this.occupiedSquares[3].x < 10){
-            this.occupiedSquares.forEach(function(element){
-                element['x']++;
-            })
-        }
-        this.render();
-    }
-    moveLeft(){
-        if(this.occupiedSquares[0].x > 0){
-            this.occupiedSquares.forEach(function(element){
-                element['x']--;
-            })
-        }
-        this.render();
-    }
-    
-}
+const jayPiece = new Piece([{'x': 5, 'y': 0},
+                            {'x': 6, 'y': 0},
+                            {'x': 7, 'y': 0},
+                            {'x': 7, 'y': 1}]);
 
-const essPiece = new EssPiece();
-
-class ZeePiece {
-    constructor(){
-        this.occupiedSquares = [{'x': 5, 'y': 0},
-                                {'x': 6, 'y': 0},
-                                {'x': 6, 'y': 1},
-                                {'x': 7, 'y': 1}];
-    }
-    render(){
-        $('.moving-piece').removeClass('moving-piece');
-        for (let i = 0; i < this.occupiedSquares.length; i++){
-            $(`.grid-square[x="${this.occupiedSquares[i]['x']}"][y="${this.occupiedSquares[i]['y']}"]`).addClass('moving-piece');
-        }
-    }
-    moveRight(){
-        if(this.occupiedSquares[3].x < 10){
-            this.occupiedSquares.forEach(function(element){
-                element['x']++;
-            })
-        }
-        this.render();
-    }
-    moveLeft(){
-        if(this.occupiedSquares[0].x > 0){
-            this.occupiedSquares.forEach(function(element){
-                element['x']--;
-            })
-        }
-        this.render();
-    }
-    
-}
-
-const zeePiece = new ZeePiece();
-
-class JayPiece {
-    constructor(){
-        this.occupiedSquares = [{'x': 5, 'y': 0},
-                                {'x': 6, 'y': 0},
-                                {'x': 7, 'y': 0},
-                                {'x': 7, 'y': 1}];
-    }
-    render(){
-        $('.moving-piece').removeClass('moving-piece');
-        for (let i = 0; i < this.occupiedSquares.length; i++){
-            $(`.grid-square[x="${this.occupiedSquares[i]['x']}"][y="${this.occupiedSquares[i]['y']}"]`).addClass('moving-piece');
-        }
-    }
-    moveRight(){
-        if(this.occupiedSquares[3].x < 10){
-            this.occupiedSquares.forEach(function(element){
-                element['x']++;
-            })
-        }
-        this.render();
-    }
-    moveLeft(){
-        if(this.occupiedSquares[0].x > 0){
-            this.occupiedSquares.forEach(function(element){
-                element['x']--;
-            })
-        }
-        this.render();
-    }
-    
-}
-
-const jayPiece = new JayPiece();
-
-class EllPiece {
-    constructor(){
-        this.occupiedSquares = [{'x': 5, 'y': 0},
-                                {'x': 5, 'y': 1},
-                                {'x': 6, 'y': 0},
-                                {'x': 7, 'y': 0}];
-    }
-    render(){
-        $('.moving-piece').removeClass('moving-piece');
-        for (let i = 0; i < this.occupiedSquares.length; i++){
-            $(`.grid-square[x="${this.occupiedSquares[i]['x']}"][y="${this.occupiedSquares[i]['y']}"]`).addClass('moving-piece');
-        }
-    }
-    moveRight(){
-        if(this.occupiedSquares[3].x < 10){
-            this.occupiedSquares.forEach(function(element){
-                element['x']++;
-            })
-        }
-        this.render();
-    }
-    moveLeft(){
-        if(this.occupiedSquares[0].x > 0){
-            this.occupiedSquares.forEach(function(element){
-                element['x']--;
-            })
-        }
-        this.render();
-    }
-    
-}
-
-const ellPiece = new EllPiece();
+const ellPiece = new Piece([{'x': 5, 'y': 0},
+                            {'x': 5, 'y': 1},
+                            {'x': 6, 'y': 0},
+                            {'x': 7, 'y': 0}]);
 
 const pieceArr = [linePiece,squarePiece,teePiece,essPiece,zeePiece,jayPiece,ellPiece];
 
@@ -285,34 +106,41 @@ const makeGrid = ()=>{
     }
 }
 
-let randIndex = Math.floor(Math.random()*pieceArr.length);
-let currentPiece = pieceArr[randIndex];
 
+// only look directly below current moving piece square:
+// if current y is bottom-piece.y - 1 && current x is bottom-piece.x
 
-const hitBottom = function(piece){
+const hitBottomOrOtherPiece = function(piece){
     const coordArr = piece.occupiedSquares;
     for(let i = 0; i < coordArr.length; i++){
-        if(coordArr[i].y == 20 || ){
+        const nextY = coordArr[i].y + 1;
+        if(coordArr[i].y == 20 || 
+            (nextY == $(`.bottom-piece[y="${nextY}"]`).attr('y') && 
+            coordArr[i].x == $(`.bottom-piece[x="${coordArr[i].x}"]`).attr('x'))
+            ){
             $('.moving-piece').removeClass('moving-piece').addClass('bottom-piece');
-            console.log('I found a bottom');
             return true;
         }
+        // console.log($(`.bottom-piece[x="${coordArr[i].x}"]`).attr('x'))
     }
 }
+
+let randIndex = Math.floor(Math.random()*pieceArr.length);
+let currentPiece = pieceArr[randIndex];
 
 const fallingPieces = ()=>{
     
     game.time++;
-        currentPiece.render();
-        if(!hitBottom(currentPiece)){
-            currentPiece.occupiedSquares.forEach(function(element){
-                element['y']++;
-            })
-        }else{
-            
-            randIndex = Math.floor(Math.random()*pieceArr.length);
-            currentPiece = pieceArr[randIndex];
-        }
+    
+    currentPiece.render();
+    if(!hitBottomOrOtherPiece(currentPiece)){
+        currentPiece.occupiedSquares.forEach(function(element){
+            element['y']++;
+        })
+    }else{
+        randIndex = Math.floor(Math.random()*pieceArr.length);
+        currentPiece = pieceArr[randIndex];
+    }
 }
 
 let timePass;
