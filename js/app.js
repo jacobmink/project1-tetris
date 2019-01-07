@@ -285,15 +285,16 @@ const makeGrid = ()=>{
     }
 }
 
-const randIndex = Math.floor(Math.random()*pieceArr.length);
-const currentPiece = pieceArr[randIndex];
+let randIndex = Math.floor(Math.random()*pieceArr.length);
+let currentPiece = pieceArr[randIndex];
 
 
 const hitBottom = function(piece){
     const coordArr = piece.occupiedSquares;
     for(let i = 0; i < coordArr.length; i++){
-        if(coordArr[i].y == 20){
-            console.log('I found a bottom: ' + coordArr[i].y);
+        if(coordArr[i].y == 20 || ){
+            $('.moving-piece').removeClass('moving-piece').addClass('bottom-piece');
+            console.log('I found a bottom');
             return true;
         }
     }
@@ -302,15 +303,16 @@ const hitBottom = function(piece){
 const fallingPieces = ()=>{
     
     game.time++;
-    if(game.arrIndex < gameArr.length){
         currentPiece.render();
         if(!hitBottom(currentPiece)){
             currentPiece.occupiedSquares.forEach(function(element){
                 element['y']++;
             })
+        }else{
+            
+            randIndex = Math.floor(Math.random()*pieceArr.length);
+            currentPiece = pieceArr[randIndex];
         }
-        game.arrIndex++;
-    }
 }
 
 let timePass;
