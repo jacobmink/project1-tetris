@@ -1,13 +1,13 @@
 .grid-square{
     border: 1px solid black;
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
     display: inline-block;
     margin: 0;
 }
 
 .grid-row{
-    height: 50px;
+    height: 30px;
     width: auto;
     margin: 0;
 }

@@ -51,22 +51,215 @@ class LinePiece {
 
 const linePiece = new LinePiece();
 
-
-
-const lineFn = (arr)=>{
-    for(let i = 0; i < 4; i++){
-        arr[game.arrIndex][i] = 1;
-        $(`.grid-square[x="${i}"][y="${game.arrIndex - 1}"]`).removeClass('moving-piece').addClass('background-piece');
-        $(`.grid-square[x="${i}"][y="${game.arrIndex}"]`).addClass('moving-piece');
-       
-
+class SquarePiece {
+    constructor(){
+        this.occupiedSquares = [{'x': 5, 'y': 0},
+                                {'x': 6, 'y': 0},
+                                {'x': 5, 'y': 1},
+                                {'x': 6, 'y': 1}];
     }
-    game.arrIndex++;
-    console.log(arr);
+    render(){
+        $('.moving-piece').removeClass('moving-piece');
+        for (let i = 0; i < this.occupiedSquares.length; i++){
+            $(`.grid-square[x="${this.occupiedSquares[i]['x']}"][y="${this.occupiedSquares[i]['y']}"]`).addClass('moving-piece');
+        }
+    }
+    moveRight(){
+        if(this.occupiedSquares[3].x < 10){
+            this.occupiedSquares.forEach(function(element){
+                element['x']++;
+            })
+        }
+        this.render();
+    }
+    moveLeft(){
+        if(this.occupiedSquares[0].x > 0){
+            this.occupiedSquares.forEach(function(element){
+                element['x']--;
+            })
+        }
+        this.render();
+    }
 }
+
+const squarePiece = new SquarePiece();
+
+class TeePiece {
+    constructor(){
+        this.occupiedSquares = [{'x': 5, 'y': 0},
+                                {'x': 6, 'y': 0},
+                                {'x': 6, 'y': 1},
+                                {'x': 7, 'y': 0}];
+    }
+    render(){
+        $('.moving-piece').removeClass('moving-piece');
+        for (let i = 0; i < this.occupiedSquares.length; i++){
+            $(`.grid-square[x="${this.occupiedSquares[i]['x']}"][y="${this.occupiedSquares[i]['y']}"]`).addClass('moving-piece');
+        }
+    }
+    moveRight(){
+        if(this.occupiedSquares[3].x < 10){
+            this.occupiedSquares.forEach(function(element){
+                element['x']++;
+            })
+        }
+        this.render();
+    }
+    moveLeft(){
+        if(this.occupiedSquares[0].x > 0){
+            this.occupiedSquares.forEach(function(element){
+                element['x']--;
+            })
+        }
+        this.render();
+    }
+    
+}
+
+const teePiece = new TeePiece();
+
+class EssPiece {
+    constructor(){
+        this.occupiedSquares = [{'x': 5, 'y': 1},
+                                {'x': 6, 'y': 0},
+                                {'x': 6, 'y': 1},
+                                {'x': 7, 'y': 0}];
+    }
+    render(){
+        $('.moving-piece').removeClass('moving-piece');
+        for (let i = 0; i < this.occupiedSquares.length; i++){
+            $(`.grid-square[x="${this.occupiedSquares[i]['x']}"][y="${this.occupiedSquares[i]['y']}"]`).addClass('moving-piece');
+        }
+    }
+    moveRight(){
+        if(this.occupiedSquares[3].x < 10){
+            this.occupiedSquares.forEach(function(element){
+                element['x']++;
+            })
+        }
+        this.render();
+    }
+    moveLeft(){
+        if(this.occupiedSquares[0].x > 0){
+            this.occupiedSquares.forEach(function(element){
+                element['x']--;
+            })
+        }
+        this.render();
+    }
+    
+}
+
+const essPiece = new EssPiece();
+
+class ZeePiece {
+    constructor(){
+        this.occupiedSquares = [{'x': 5, 'y': 0},
+                                {'x': 6, 'y': 0},
+                                {'x': 6, 'y': 1},
+                                {'x': 7, 'y': 1}];
+    }
+    render(){
+        $('.moving-piece').removeClass('moving-piece');
+        for (let i = 0; i < this.occupiedSquares.length; i++){
+            $(`.grid-square[x="${this.occupiedSquares[i]['x']}"][y="${this.occupiedSquares[i]['y']}"]`).addClass('moving-piece');
+        }
+    }
+    moveRight(){
+        if(this.occupiedSquares[3].x < 10){
+            this.occupiedSquares.forEach(function(element){
+                element['x']++;
+            })
+        }
+        this.render();
+    }
+    moveLeft(){
+        if(this.occupiedSquares[0].x > 0){
+            this.occupiedSquares.forEach(function(element){
+                element['x']--;
+            })
+        }
+        this.render();
+    }
+    
+}
+
+const zeePiece = new ZeePiece();
+
+class JayPiece {
+    constructor(){
+        this.occupiedSquares = [{'x': 5, 'y': 0},
+                                {'x': 6, 'y': 0},
+                                {'x': 7, 'y': 0},
+                                {'x': 7, 'y': 1}];
+    }
+    render(){
+        $('.moving-piece').removeClass('moving-piece');
+        for (let i = 0; i < this.occupiedSquares.length; i++){
+            $(`.grid-square[x="${this.occupiedSquares[i]['x']}"][y="${this.occupiedSquares[i]['y']}"]`).addClass('moving-piece');
+        }
+    }
+    moveRight(){
+        if(this.occupiedSquares[3].x < 10){
+            this.occupiedSquares.forEach(function(element){
+                element['x']++;
+            })
+        }
+        this.render();
+    }
+    moveLeft(){
+        if(this.occupiedSquares[0].x > 0){
+            this.occupiedSquares.forEach(function(element){
+                element['x']--;
+            })
+        }
+        this.render();
+    }
+    
+}
+
+const jayPiece = new JayPiece();
+
+class EllPiece {
+    constructor(){
+        this.occupiedSquares = [{'x': 5, 'y': 0},
+                                {'x': 5, 'y': 1},
+                                {'x': 6, 'y': 0},
+                                {'x': 7, 'y': 0}];
+    }
+    render(){
+        $('.moving-piece').removeClass('moving-piece');
+        for (let i = 0; i < this.occupiedSquares.length; i++){
+            $(`.grid-square[x="${this.occupiedSquares[i]['x']}"][y="${this.occupiedSquares[i]['y']}"]`).addClass('moving-piece');
+        }
+    }
+    moveRight(){
+        if(this.occupiedSquares[3].x < 10){
+            this.occupiedSquares.forEach(function(element){
+                element['x']++;
+            })
+        }
+        this.render();
+    }
+    moveLeft(){
+        if(this.occupiedSquares[0].x > 0){
+            this.occupiedSquares.forEach(function(element){
+                element['x']--;
+            })
+        }
+        this.render();
+    }
+    
+}
+
+const ellPiece = new EllPiece();
+
+const pieceArr = [linePiece,squarePiece,teePiece,essPiece,zeePiece,jayPiece,ellPiece];
 
 const game = {
     time: 0,
+    level: 0,
+    score: 0,
     pieceList: pieces,
     arrIndex: 0
 }
@@ -91,13 +284,31 @@ const makeGrid = ()=>{
         $('.game-board').append($gridRow);
     }
 }
+
+const randIndex = Math.floor(Math.random()*pieceArr.length);
+const currentPiece = pieceArr[randIndex];
+
+
+const hitBottom = function(piece){
+    const coordArr = piece.occupiedSquares;
+    for(let i = 0; i < coordArr.length; i++){
+        if(coordArr[i].y == 20){
+            console.log('I found a bottom: ' + coordArr[i].y);
+            return true;
+        }
+    }
+}
+
 const fallingPieces = ()=>{
+    
     game.time++;
     if(game.arrIndex < gameArr.length){
-        linePiece.render();
-        linePiece.occupiedSquares.forEach(function(element){
-            element['y']++;
-        })
+        currentPiece.render();
+        if(!hitBottom(currentPiece)){
+            currentPiece.occupiedSquares.forEach(function(element){
+                element['y']++;
+            })
+        }
         game.arrIndex++;
     }
 }
@@ -110,13 +321,13 @@ $('#start-button').click((e)=>{
     makeStats();
     timePass = setInterval(()=>{
         fallingPieces()
-    }, 1000);
+    }, 500);
 })
 
 $('body').on('keydown', function(e){
     if(e.which == 39){
-        linePiece.moveRight();
+        currentPiece.moveRight();
     }else if(e.which == 37){
-        linePiece.moveLeft();
+        currentPiece.moveLeft();
     }
 })
