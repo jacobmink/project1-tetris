@@ -1,8 +1,21 @@
-.gridSquare{
-    width: 90px;
-    height: 90px;
+.grid-square{
+    border: 1px solid black;
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+    margin: 0;
 }
 
-.gridRow{
-    height: 90px;
+.grid-row{
+    height: 50px;
+    width: auto;
+    margin: 0;
+}
+
+.moving-piece{
+    background: black;
+}
+
+.background-piece{
+    background: white;
 }
