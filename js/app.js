@@ -13,6 +13,7 @@ class Piece {
         this.occupiedSquares = coords;
     }
     render(){
+        // removeLine();
         $('.moving-piece').removeClass('moving-piece');
         for (let i = 0; i < this.occupiedSquares.length; i++){
             $(`.grid-square[x="${this.occupiedSquares[i]['x']}"][y="${this.occupiedSquares[i]['y']}"]`).addClass('moving-piece');
@@ -21,7 +22,7 @@ class Piece {
     moveRight(){
         let goForRight = true;
         for(let i = 0; i < this.occupiedSquares.length; i++){
-            if(this.occupiedSquares[i].x == 10 || 
+            if(this.occupiedSquares[i].x == 9 || 
                 $(`.grid-square[x="${this.occupiedSquares[i].x + 1}"][y="${this.occupiedSquares[i].y}"]`).hasClass('bottom-piece'))
                 {goForRight = false;}
         }
@@ -49,7 +50,7 @@ class Piece {
     moveDown(){
         let eligibleToMove = true;
         for(let i = 0; i < this.occupiedSquares.length; i++){
-            if(this.occupiedSquares[i].y == 20 ||
+            if(this.occupiedSquares[i].y == 19 ||
                 $(`.grid-square[x="${this.occupiedSquares[i].x}"][y="${this.occupiedSquares[i].y + 1}"]`).hasClass('bottom-piece')
             ){eligibleToMove = false;}
         }
@@ -417,7 +418,7 @@ const game = {
         }
     },
     scoreUp(){
-        for(let i = 0; i < 11; i++){
+        for(let i = 0; i < 10; i++){
             if($(`.grid-square[x="${i}"]`).hasClass('bottom-piece')){
                 this.score++;
                 $('#score').text(`${this.score}`);
@@ -436,10 +437,10 @@ const makeStats = ()=>{
 }
 
 const makeGrid = ()=>{
-    for (let y = 0; y < 21; y++){
+    for (let y = 0; y < 20; y++){
         const $gridRow = $('<div/>').addClass('grid-row');
         
-        for (let x = 0; x < 11; x++){
+        for (let x = 0; x < 10; x++){
             const $gridSquare = $('<div/>').addClass('grid-square').attr('x',x).attr('y',y);
             // $gridSquare.attr('coord', {x,i});
             $($gridRow).append($gridSquare);
@@ -453,7 +454,7 @@ const hitBottom = function(piece){
     let notBottom = true;
     for(let i = 0; i < coordArr.length; i++){
         const nextY = coordArr[i].y + 1;
-        if(nextY - 1 == 20){
+        if(nextY - 1 == 19){
             notBottom = false;
         }
     }
@@ -503,24 +504,36 @@ const whichKey = (e)=>{
         }
 }
 
-// const removeLine = ()=>{
-//     // look across the grid on one y-value, 
-
-//     for(let i = 0; i < 11; i++){
-//         if($(`.grid-square[x="${i}"]`).hasClass('.bottom-piece'))
-//     }
-// }
-
-
-
-
+const removeLine = ()=>{
+    // every time this is called, check entire page for full line.
+    
+    for(let y = 19; y > -1; y--){
+        let occupied = 0;
+        for(let x = 0; x < 10; x++){
+            if($(`.grid-square[x="${x}"][y="${y}"]`).hasClass('bottom-piece')){
+                occupied++;
+            }
+        }
+        if(occupied == 10){
+            $(`.bottom-piece[y="${y}"]`).removeClass('bottom-piece');
+            // return;
+            
+        }
+    }
+    // if(occupied == 10){
+    //     for(let i = 0; i < $('.bottom-piece').length; i++){
+    //         console.log($($('.bottom-piece')[i]).attr('y'));
+    //     }
+    // }
+    
+}
 
 
 
 let currentPiece = createPiece();
 
 const fallingPieces = ()=>{
-    
+    removeLine();
     currentPiece.render();
     if(hitBottom(currentPiece) || hitOtherPiece(currentPiece)){
         currentPiece = createPiece();
@@ -545,7 +558,8 @@ $('#start-button').click((e)=>{
     makeStats();
     timePass = setInterval(()=>{
         game.time++;
-        fallingPieces()
+        $('#timer').text(`${game.time}`);
+        fallingPieces();
     }, game.speed);
 })
 
