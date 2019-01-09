@@ -13,7 +13,6 @@ class Piece {
         this.occupiedSquares = coords;
     }
     render(){
-        // removeLine();
         $('.moving-piece').removeClass('moving-piece');
         for (let i = 0; i < this.occupiedSquares.length; i++){
             $(`.grid-square[x="${this.occupiedSquares[i]['x']}"][y="${this.occupiedSquares[i]['y']}"]`).addClass('moving-piece');
@@ -504,8 +503,11 @@ const whichKey = (e)=>{
         }
 }
 
+const renderBoard = ()=>{
+
+}
+
 const removeLine = ()=>{
-    // every time this is called, check entire page for full line.
     
     for(let y = 19; y > -1; y--){
         let occupied = 0;
@@ -516,16 +518,43 @@ const removeLine = ()=>{
         }
         if(occupied == 10){
             $(`.bottom-piece[y="${y}"]`).removeClass('bottom-piece');
-            // return;
+            for(let i = y; i > -1; i--){
+                for(let x = 0; x < 11; x++){
+                    let thisPiece = $(`.grid-square[x="${x}"][y="${i}"]`);
+                    let previousPiece = $(`.grid-square[x="${x}"][y="${i - 1}"]`);
+                    // let nextPiece = $(`.grid-square[x="${x}"][y="${i + 1}"]`)
+                    if($(`.grid-square[x="${x}"][y="${i - 1}"]`).hasClass('bottom-piece')){
+                        thisPiece.addClass('bottom-piece');
+                        previousPiece.removeClass('bottom-piece');
+                    }
+                }
+            }
+
+
+            game.score++;
+            $('#score').text(`${game.score}`);
+            // for(let i = 0; i < $('.bottom-piece').length; i++){
+            //     const thisPiece = $($('.bottom-piece')[i]);
+            //     const previousSquare = $(`.grid-square[x="${thisPiece.attr('x')}"][y="${thisPiece.attr('y') - 1}"]`);
+            //     const nextSquare = $(`.grid-square[x="${thisPiece.attr('x')}"][y="${thisPiece.attr('y') + 1}"]`);
+
+
+                
+                // if(thisPiece.attr('y') < y){
+                //     if(!previousSquare.hasClass('bottom-piece') && nextSquare.hasClass('bottom-piece')){
+                //         thisPiece.removeClass('bottom-piece');
+                //     }else if(previousSquare.hasClass('bottom-piece') && !nextSquare.hasClass('bottom-piece')){
+                //         nextSquare.addClass('bottom-piece');
+                //     }else if(!previousSquare.hasClass('bottom-piece') && !nextSquare.hasClass('bottom-piece')){
+                //         thisPiece.removeClass('bottom-piece');
+                //         nextSquare.addClass('bottom-piece');
+                //     }
+                // }
+                
+            // }
             
         }
     }
-    // if(occupied == 10){
-    //     for(let i = 0; i < $('.bottom-piece').length; i++){
-    //         console.log($($('.bottom-piece')[i]).attr('y'));
-    //     }
-    // }
-    
 }
 
 
@@ -559,6 +588,7 @@ $('#start-button').click((e)=>{
     timePass = setInterval(()=>{
         game.time++;
         $('#timer').text(`${game.time}`);
+       
         fallingPieces();
     }, game.speed);
 })

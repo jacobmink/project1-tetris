@@ -25,3 +25,8 @@
 .background-piece{
     background: white;
 }
+
+.shifted-piece{
+    background: black;
+    border: 1px solid red;
+}
