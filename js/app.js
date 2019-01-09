@@ -70,15 +70,27 @@ class LinePiece extends Piece {
                                 {'x': 7, 'y': 0},
                                 {'x': 8, 'y': 0}];
     }
-    rotate(){
+    rotateRight(){
         if(this.occupiedSquares[0].x < this.occupiedSquares[1].x){
-            console.log('make vertical');
             this.occupiedSquares = [{'x': this.occupiedSquares[0].x + 1, 'y':this.occupiedSquares[0].y - 1},
         {'x': this.occupiedSquares[1].x, 'y':this.occupiedSquares[1].y},
         {'x': this.occupiedSquares[2].x - 1, 'y':this.occupiedSquares[2].y + 1},
         {'x': this.occupiedSquares[3].x - 2, 'y':this.occupiedSquares[3].y + 2}]
         }else{
-            console.log('make horizontal')
+            this.occupiedSquares = [{'x': this.occupiedSquares[0].x - 1, 'y':this.occupiedSquares[0].y + 1},
+        {'x': this.occupiedSquares[1].x, 'y':this.occupiedSquares[1].y},
+        {'x': this.occupiedSquares[2].x + 1, 'y':this.occupiedSquares[2].y - 1},
+        {'x': this.occupiedSquares[3].x + 2, 'y':this.occupiedSquares[3].y - 2}]
+        }
+        this.render();
+    }
+    rotateLeft(){
+        if(this.occupiedSquares[0].x < this.occupiedSquares[1].x){
+            this.occupiedSquares = [{'x': this.occupiedSquares[0].x + 1, 'y':this.occupiedSquares[0].y - 1},
+        {'x': this.occupiedSquares[1].x, 'y':this.occupiedSquares[1].y},
+        {'x': this.occupiedSquares[2].x - 1, 'y':this.occupiedSquares[2].y + 1},
+        {'x': this.occupiedSquares[3].x - 2, 'y':this.occupiedSquares[3].y + 2}]
+        }else{
             this.occupiedSquares = [{'x': this.occupiedSquares[0].x - 1, 'y':this.occupiedSquares[0].y + 1},
         {'x': this.occupiedSquares[1].x, 'y':this.occupiedSquares[1].y},
         {'x': this.occupiedSquares[2].x + 1, 'y':this.occupiedSquares[2].y - 1},
@@ -94,6 +106,12 @@ class SquarePiece extends Piece {
         {'x': 6, 'y': 0},
         {'x': 5, 'y': 1},
         {'x': 6, 'y': 1}]
+    }
+    rotateRight(){
+
+    }
+    rotateLeft(){
+
     }
 }
 class TeePiece extends Piece {
@@ -169,7 +187,25 @@ class EssPiece extends Piece {
         {'x': 6, 'y': 1},
         {'x': 7, 'y': 0}]
     }
-    rotate(){
+    rotateRight(){
+        const a = this.occupiedSquares[0];
+        const b = this.occupiedSquares[1];
+        const c = this.occupiedSquares[2];
+        const d = this.occupiedSquares[3];
+        if(a.y == c.y){
+            this.occupiedSquares = [{'x': a.x, 'y': a.y - 2},
+            {'x': b.x, 'y': b.y},
+            {'x': c.x - 1, 'y': c.y - 1},
+            {'x': d.x - 1, 'y': d.y + 1}]
+        }else{
+            this.occupiedSquares = [{'x': a.x, 'y': a.y + 2},
+            {'x': b.x, 'y': b.y},
+            {'x': c.x + 1, 'y': c.y + 1},
+            {'x': d.x + 1, 'y': d.y - 1}]
+        }
+        this.render();
+    }
+    rotateLeft(){
         const a = this.occupiedSquares[0];
         const b = this.occupiedSquares[1];
         const c = this.occupiedSquares[2];
@@ -196,7 +232,25 @@ class ZeePiece extends Piece {
         {'x': 6, 'y': 1},
         {'x': 7, 'y': 1}];
     }
-    rotate(){
+    rotateRight(){
+        const a = this.occupiedSquares[0];
+        const b = this.occupiedSquares[1];
+        const c = this.occupiedSquares[2];
+        const d = this.occupiedSquares[3];
+        if(a.x < b.x){
+            this.occupiedSquares = [{'x': a.x + 1, 'y': a.y - 1},
+            {'x': b.x, 'y': b.y},
+            {'x': c.x - 1, 'y': c.y - 1},
+            {'x': d.x - 2, 'y': d.y}]
+        }else{
+            this.occupiedSquares = [{'x': a.x - 1, 'y': a.y + 1},
+            {'x': b.x, 'y': b.y},
+            {'x': c.x + 1, 'y': c.y + 1},
+            {'x': d.x + 2, 'y': d.y}]
+        }
+        this.render();
+    }
+    rotateLeft(){
         const a = this.occupiedSquares[0];
         const b = this.occupiedSquares[1];
         const c = this.occupiedSquares[2];
@@ -346,30 +400,38 @@ class EllPiece extends Piece {
     }
 }
 
-const linePiece = new LinePiece();
-const squarePiece = new SquarePiece();
-const teePiece = new TeePiece();
-const essPiece = new EssPiece();
-const zeePiece = new ZeePiece();
-const jayPiece = new JayPiece();
-const ellPiece = new EllPiece();
-
-const pieceArr = [linePiece,squarePiece,teePiece,essPiece,zeePiece,jayPiece,ellPiece];
+const constructorArr = [LinePiece, SquarePiece, TeePiece, EssPiece, ZeePiece, JayPiece, EllPiece]
 
 const game = {
     time: 0,
     level: 0,
     score: 0,
-    pieceList: pieceArr,
-    arrIndex: 0
+    speed: 1000,
+    // pieceList: pieceArr,
+    arrIndex: 0,
+    gameOver: false,
+    levelUp(){
+        if(this.score % 10 == 0){
+            this.level++;
+            this.speed = this.speed - 200;
+        }
+    },
+    scoreUp(){
+        for(let i = 0; i < 11; i++){
+            if($(`.grid-square[x="${i}"]`).hasClass('bottom-piece')){
+                this.score++;
+                $('#score').text(`${this.score}`);
+            }
+        }
+    }
 }
 
 
 const makeStats = ()=>{
-    const $timer = $('<div/>').html(`<h2>Time: ${game.time}</h2>`);
-    const $level = $('<div/>').html(`<h2>Level: ${game.level}</h2>`);
-    const $score = $('<div/>').html(`<h2>Score: ${game.score}</h2>`);
-    const $nextPiece = $('<div/>').html('<h2>Next Piece</h2>');
+    const $timer = $('<div/>').html(`<h2>Time: <span id="timer">${game.time}</span></h2>`);
+    const $level = $('<div/>').html(`<h2>Level: <span id="level">${game.level}</span></h2>`);
+    const $score = $('<div/>').html(`<h2>Score: <span id="score">${game.score}</span></h2>`);
+    const $nextPiece = $('<div/>').html('<h2>Next Piece: <span id="nextPiece"></span></h2>');
     $('.stats').append($timer, $level, $score, $nextPiece);
 }
 
@@ -386,61 +448,93 @@ const makeGrid = ()=>{
     }
 }
 
+const hitBottom = function(piece){
+    const coordArr = piece.occupiedSquares;
+    let notBottom = true;
+    for(let i = 0; i < coordArr.length; i++){
+        const nextY = coordArr[i].y + 1;
+        if(nextY - 1 == 20){
+            notBottom = false;
+        }
+    }
+    if(!notBottom){
+        $('body').off('keydown')
+        $('.moving-piece').removeClass('moving-piece').addClass('bottom-piece');
+        return true;
+    }
+    return false;
+}
 
-// only look directly below current moving piece square:
-// if current y is bottom-piece.y - 1 && current x is bottom-piece.x
-
-const hitBottomOrOtherPiece = function(piece){
+const hitOtherPiece = function(piece){
     const coordArr = piece.occupiedSquares;
     let eligibleToMove = true;
     for(let i = 0; i < coordArr.length; i++){
         const nextY = coordArr[i].y + 1;
-        if(nextY - 1 == 20){
+        if($(`.grid-square[x="${coordArr[i].x}"][y="${nextY}"]`).hasClass('bottom-piece')){
             eligibleToMove = false;
-            console.log('bottom hit');
-        }else if($(`.grid-square[x="${coordArr[i].x}"][y="${nextY}"]`).hasClass('bottom-piece'))
-            {
-            eligibleToMove = false;
-            console.log('other piece hit');
         }
     }
     if(!eligibleToMove){
+        $('body').off('keydown')
         $('.moving-piece').removeClass('moving-piece').addClass('bottom-piece');
         return true;
     }
+    return false;
 }
 
-let randIndex = Math.floor(Math.random()*pieceArr.length);
-// let randColorRed = Math.floor(Math.random()*255);
-// let randColorGreen = Math.floor(Math.random()*255);
-// let randColorBlue = Math.floor(Math.random()*255);
+const createPiece = ()=>{
+    let randIndex = Math.floor(Math.random()*constructorArr.length);
+    // randIndex = 1;
+    const currentPiece = new constructorArr[randIndex]();
+    return currentPiece;
+}
 
-let currentPiece = pieceArr[6];
-// $('.moving-piece').css(`background-color: rgb(${randColorRed}, ${randColorGreen}, ${randColorBlue});`);
+const whichKey = (e)=>{
+        if(e.which == 39){
+            currentPiece.moveRight();
+        }else if(e.which == 37){
+            currentPiece.moveLeft();
+        }else if(e.which == 40){
+            currentPiece.moveDown();
+        }else if(e.which == 88){
+            currentPiece.rotateRight();
+        }else if(e.which == 90){
+            currentPiece.rotateLeft();
+        }
+}
+
+// const removeLine = ()=>{
+//     // look across the grid on one y-value, 
+
+//     for(let i = 0; i < 11; i++){
+//         if($(`.grid-square[x="${i}"]`).hasClass('.bottom-piece'))
+//     }
+// }
+
+
+
+
+
+
+
+let currentPiece = createPiece();
 
 const fallingPieces = ()=>{
     
     currentPiece.render();
-    if(!hitBottomOrOtherPiece(currentPiece)){
+    if(hitBottom(currentPiece) || hitOtherPiece(currentPiece)){
+        currentPiece = createPiece();
+        $('body').on('keydown', function(e){
+            whichKey(e);
+        });
+    }else{
         currentPiece.occupiedSquares.forEach(function(element){
             element['y']++;
         })
-    }else{
-        clearInterval(timePass);
-        console.log('new piece created')
-
-        // randColorRed = Math.floor(Math.random()*254);
-        // randColorGreen = Math.floor(Math.random()*254);
-        // randColorBlue = Math.floor(Math.random()*254);
-        randIndex = Math.floor(Math.random()*pieceArr.length);
-        // $('.moving-piece').attr('style',`background-color: rgb(${randColorRed}, ${randColorGreen}, ${randColorBlue});`)
-        currentPiece = pieceArr[randIndex];
-        timePass = setInterval(()=>{
-            game.time++;
-            fallingPieces();
-        },1000);
-
     }
+    // if(game.gameOver == false){
+    //     fallingPieces();
+    // }
 }
 
 let timePass;
@@ -452,39 +546,9 @@ $('#start-button').click((e)=>{
     timePass = setInterval(()=>{
         game.time++;
         fallingPieces()
-    }, 1000);
+    }, game.speed);
 })
 
 $('body').on('keydown', function(e){
-    if(!hitBottomOrOtherPiece(currentPiece)){
-        if(e.which == 39){
-            console.log('right');
-            currentPiece.moveRight();
-        }else if(e.which == 37){
-            console.log('left');
-            currentPiece.moveLeft();
-        }else if(e.which == 40){
-            console.log('down')
-            currentPiece.moveDown();
-        }else if(e.which == 88){
-            console.log('rotate right');
-            linePiece.rotate();
-            teePiece.rotateRight();
-            essPiece.rotate();
-            zeePiece.rotate();
-            jayPiece.rotateRight();
-            ellPiece.rotateRight();
-        }else if(e.which == 90){
-            console.log('rotate left');
-            linePiece.rotate();
-            teePiece.rotateLeft();
-            essPiece.rotate();
-            zeePiece.rotate();
-            jayPiece.rotateLeft();
-            ellPiece.rotateLeft();
-        }
-    }else{
-        // e.preventDefault();
-        return false;
-    }
+    whichKey(e);
 })
