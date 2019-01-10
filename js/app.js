@@ -404,8 +404,8 @@ const constructorArr = [LinePiece, SquarePiece, TeePiece, EssPiece, ZeePiece, Ja
 
 const game = {
     time: 0,
-    level: 0,
-    score: 0,
+    level: 1,
+    score: 9,
     speed: 1000,
     // pieceList: pieceArr,
     arrIndex: 0,
@@ -413,19 +413,48 @@ const game = {
     levelUp(){
         if(this.score % 10 == 0){
             this.level++;
-            this.speed = this.speed - 200;
+            $('#level').text(`${this.level}`);
+            this.speed = this.speed - 500;
         }
     },
     scoreUp(){
-        for(let i = 0; i < 10; i++){
-            if($(`.grid-square[x="${i}"]`).hasClass('bottom-piece')){
-                this.score++;
-                $('#score').text(`${this.score}`);
-            }
+        this.score++;
+        $('#score').text(`${this.score}`);
+        this.levelUp();
+    },
+    gameOverEvent(){
+        if($(`.grid-square[y="0"]`).hasClass('bottom-piece')){
+            this.gameOver == true;
+            // console.log('GAME OVER MAN');
+            clearInterval(timePass);
+            // alert('Game Over!');
+            // setInterval(makeRowBlack, 500);
+            makeRowGrey();
+            makeRestartButton();
         }
+        
     }
 }
 
+const makeRestartButton = ()=>{
+    const $restartButton = $('<button/>').text('Try Again').addClass('restart-button').click(()=>{
+        console.log('clicked restart');
+    });
+    $(`.dead-square[y="10"][x="5"]`).append($restartButton);
+}
+
+const makeRowGrey = ()=>{
+    $('.grid-square').removeClass('bottom-piece');
+    for(let y = 19; y > -1; y--){
+        for(let x = 0; x < 10; x++){
+            setInterval(()=>{
+                $(`.grid-square[y="${y}"][x="${x}"]`).addClass('dead-square');
+            }, 500);
+                
+            
+        }
+    }
+}
 
 const makeStats = ()=>{
     const $timer = $('<div/>').html(`<h2>Time: <span id="timer">${game.time}</span></h2>`);
@@ -531,27 +560,8 @@ const removeLine = ()=>{
             }
 
 
-            game.score++;
-            $('#score').text(`${game.score}`);
-            // for(let i = 0; i < $('.bottom-piece').length; i++){
-            //     const thisPiece = $($('.bottom-piece')[i]);
-            //     const previousSquare = $(`.grid-square[x="${thisPiece.attr('x')}"][y="${thisPiece.attr('y') - 1}"]`);
-            //     const nextSquare = $(`.grid-square[x="${thisPiece.attr('x')}"][y="${thisPiece.attr('y') + 1}"]`);
-
-
-                
-                // if(thisPiece.attr('y') < y){
-                //     if(!previousSquare.hasClass('bottom-piece') && nextSquare.hasClass('bottom-piece')){
-                //         thisPiece.removeClass('bottom-piece');
-                //     }else if(previousSquare.hasClass('bottom-piece') && !nextSquare.hasClass('bottom-piece')){
-                //         nextSquare.addClass('bottom-piece');
-                //     }else if(!previousSquare.hasClass('bottom-piece') && !nextSquare.hasClass('bottom-piece')){
-                //         thisPiece.removeClass('bottom-piece');
-                //         nextSquare.addClass('bottom-piece');
-                //     }
-                // }
-                
-            // }
+            game.scoreUp();
+            console.log(game.speed)
             
         }
     }
@@ -562,7 +572,9 @@ const removeLine = ()=>{
 let currentPiece = createPiece();
 
 const fallingPieces = ()=>{
-    removeLine();
+    game.time++;
+    $('#timer').text(`${game.time}`);
+    // removeLine();
     currentPiece.render();
     if(hitBottom(currentPiece) || hitOtherPiece(currentPiece)){
         currentPiece = createPiece();
@@ -574,23 +586,28 @@ const fallingPieces = ()=>{
             element['y']++;
         })
     }
-    // if(game.gameOver == false){
-    //     fallingPieces();
-    // }
+   
 }
 
+// if(game.gameOver == false){
+//     fallingPieces();
+// }
+
+
 let timePass;
+let miniInterval;
 
 $('#start-button').click((e)=>{
     $(e.target).hide();
     makeGrid();
     makeStats();
     timePass = setInterval(()=>{
-        game.time++;
-        $('#timer').text(`${game.time}`);
-       
-        fallingPieces();
+        game.gameOverEvent();
+        if(!game.gameOver){
+            fallingPieces();
+        }
     }, game.speed);
+    miniInterval = setInterval(removeLine,100);
 })
 
 $('body').on('keydown', function(e){
