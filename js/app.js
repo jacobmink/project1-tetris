@@ -410,11 +410,14 @@ const game = {
     // pieceList: pieceArr,
     arrIndex: 0,
     gameOver: false,
+    // nextPiece: makeNextPiece(),
     levelUp(){
         if(this.score % 10 == 0){
             this.level++;
             $('#level').text(`${this.level}`);
+            clearInterval(timePass);
             this.speed = this.speed - 500;
+            setInterval
         }
     },
     scoreUp(){
@@ -425,46 +428,63 @@ const game = {
     gameOverEvent(){
         if($(`.grid-square[y="0"]`).hasClass('bottom-piece')){
             this.gameOver == true;
-            // console.log('GAME OVER MAN');
             clearInterval(timePass);
             // alert('Game Over!');
             // setInterval(makeRowBlack, 500);
-            makeRowGrey();
+            makeRowGrey(19);
             makeRestartButton();
+            console.log('still game over')
         }
         
     }
 }
 
 const makeRestartButton = ()=>{
-    const $restartButton = $('<button/>').text('Try Again').addClass('restart-button').click(()=>{
-        console.log('clicked restart');
+    const $restartButton = $('<button/>').text('Try Again').addClass('restart-button').click((e)=>{
+        startRoutine(e)
     });
-    $(`.dead-square[y="10"][x="5"]`).append($restartButton);
+    $(`.stats`).append($restartButton);
 }
 
-const makeRowGrey = ()=>{
-    $('.grid-square').removeClass('bottom-piece');
-    for(let y = 19; y > -1; y--){
-        for(let x = 0; x < 10; x++){
-            setInterval(()=>{
-                $(`.grid-square[y="${y}"][x="${x}"]`).addClass('dead-square');
-            }, 500);
-                
-            
-        }
+const makeRowGrey = (y)=>{
+    if(y > -1){
+        $('.grid-square').removeClass('bottom-piece');
+        $(`.grid-square[y="${y}"]`).addClass('dead-square');
+        setTimeout(()=>{
+            makeRowGrey(--y);
+        }, 100)
     }
+    
+}
+
+const playOrPauseAudio = (e)=>{
+    const $audio = $('#audio')[0];
+    if($(e.target).hasClass('play-button')){
+        $audio.play();
+        $(e.target).removeClass('play-button').addClass('pause-button').text('\u2016');
+    }
+    else if($(e.target).hasClass('pause-button')){
+        $audio.pause();
+        $(e.target).removeClass('pause-button').addClass('play-button').text('\u25B6');
+    }
+    
 }
 
 const makeStats = ()=>{
+    
+    // const $audio = $('<audio loop></audio>').addClass('audio').html("<source src='tetris_theme.mp3' type='audio/mpeg'>");
+    const $audioPlay = $('<button/>').addClass('play-button').text('\u25B6').click((e)=>{
+        playOrPauseAudio(e)
+    });
     const $timer = $('<div/>').html(`<h2>Time: <span id="timer">${game.time}</span></h2>`);
     const $level = $('<div/>').html(`<h2>Level: <span id="level">${game.level}</span></h2>`);
     const $score = $('<div/>').html(`<h2>Score: <span id="score">${game.score}</span></h2>`);
     const $nextPiece = $('<div/>').html('<h2>Next Piece: <span id="nextPiece"></span></h2>');
-    $('.stats').append($timer, $level, $score, $nextPiece);
+    $('.stats').append($audioPlay, $timer, $level, $score, $nextPiece);
 }
 
 const makeGrid = ()=>{
+    $('.grid-square').removeClass('bottom-piece dead-square')
     for (let y = 0; y < 20; y++){
         const $gridRow = $('<div/>').addClass('grid-row');
         
@@ -551,33 +571,57 @@ const removeLine = ()=>{
                 for(let x = 0; x < 11; x++){
                     let thisPiece = $(`.grid-square[x="${x}"][y="${i}"]`);
                     let previousPiece = $(`.grid-square[x="${x}"][y="${i - 1}"]`);
-                    // let nextPiece = $(`.grid-square[x="${x}"][y="${i + 1}"]`)
                     if($(`.grid-square[x="${x}"][y="${i - 1}"]`).hasClass('bottom-piece')){
                         thisPiece.addClass('bottom-piece');
                         previousPiece.removeClass('bottom-piece');
                     }
                 }
             }
-
-
             game.scoreUp();
-            console.log(game.speed)
-            
         }
     }
 }
 
+const makeNextPiece = ()=>{
+    const nextPiece = createPiece();
+    $('#nextPiece').append(nextPiece);
+    // return nextPiece;
+}
 
+const startRoutine = (e)=>{
+    $(e.target).hide();
+    $('.stats').empty();
+    $('.game-board').empty();
+    game.time = 0;
+    game.level = 0;
+    game.speed = 1000;
+    game.score = 0;
+    makeGrid();
+    console.log($('.grid-square')[0])
+    makeStats();
+    
+    // timePass = whichInterval();
+    
+    timePass = setInterval(()=>{
+        game.gameOverEvent();
+        if(!game.gameOver){
+            fallingPieces();
+        }
+    }, game.speed);
+    miniInterval = setInterval(removeLine,100);
+}
 
 let currentPiece = createPiece();
+let nextPiece = createPiece();
 
 const fallingPieces = ()=>{
     game.time++;
     $('#timer').text(`${game.time}`);
-    // removeLine();
+    $('#nextPiece').append(nextPiece);
     currentPiece.render();
     if(hitBottom(currentPiece) || hitOtherPiece(currentPiece)){
-        currentPiece = createPiece();
+        currentPiece = nextPiece;
+        nextPiece = createPiece();
         $('body').on('keydown', function(e){
             whichKey(e);
         });
@@ -589,25 +633,12 @@ const fallingPieces = ()=>{
    
 }
 
-// if(game.gameOver == false){
-//     fallingPieces();
-// }
-
 
 let timePass;
 let miniInterval;
 
 $('#start-button').click((e)=>{
-    $(e.target).hide();
-    makeGrid();
-    makeStats();
-    timePass = setInterval(()=>{
-        game.gameOverEvent();
-        if(!game.gameOver){
-            fallingPieces();
-        }
-    }, game.speed);
-    miniInterval = setInterval(removeLine,100);
+   startRoutine(e);
 })
 
 $('body').on('keydown', function(e){
