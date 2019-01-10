@@ -9,13 +9,14 @@ for (let i = 0; i < 21; i++){
 }
 
 class Piece {
-    constructor(coords){
+    constructor(coords, color){
         this.occupiedSquares = coords;
+        this.color = color;
     }
     render(){
-        $('.moving-piece').removeClass('moving-piece');
+        $('.moving-piece').removeClass('moving-piece').attr('style','');
         for (let i = 0; i < this.occupiedSquares.length; i++){
-            $(`.grid-square[x="${this.occupiedSquares[i]['x']}"][y="${this.occupiedSquares[i]['y']}"]`).addClass('moving-piece');
+            $(`.grid-square[x="${this.occupiedSquares[i]['x']}"][y="${this.occupiedSquares[i]['y']}"]`).addClass('moving-piece').attr('style', this.color);
         }
     }
     moveRight(){
@@ -62,13 +63,22 @@ class Piece {
     }
 }
 
+const lineStyle = 'background: #84C26D; border: 1px solid black';
+const squareStyle = 'background: black; border: 3px solid white';
+const teeStyle = '';
+const essStyle = '';
+const zeeStyle = '';
+const jayStyle = '';
+const ellStyle = 'background: #2D6A4E; border: 2px solid black';
+
 class LinePiece extends Piece {
-    constructor(occupiedSquares){
-        super(occupiedSquares);
+    constructor(occupiedSquares, color){
+        super(occupiedSquares, color);
         this.occupiedSquares = [{'x': 5, 'y': 0},
                                 {'x': 6, 'y': 0},
                                 {'x': 7, 'y': 0},
                                 {'x': 8, 'y': 0}];
+        this.color = lineStyle;
     }
     rotateRight(){
         if(this.occupiedSquares[0].x < this.occupiedSquares[1].x){
@@ -100,12 +110,13 @@ class LinePiece extends Piece {
     }
 }
 class SquarePiece extends Piece {
-    constructor(occupiedSquares){
-        super(occupiedSquares);
+    constructor(occupiedSquares, color){
+        super(occupiedSquares, color);
         this.occupiedSquares = [{'x': 5, 'y': 0},
         {'x': 6, 'y': 0},
         {'x': 5, 'y': 1},
-        {'x': 6, 'y': 1}]
+        {'x': 6, 'y': 1}];
+        this.color = squareStyle;
     }
     rotateRight(){
 
@@ -115,12 +126,13 @@ class SquarePiece extends Piece {
     }
 }
 class TeePiece extends Piece {
-    constructor(occupiedSquares){
-        super(occupiedSquares);
+    constructor(occupiedSquares, color){
+        super(occupiedSquares, color);
         this.occupiedSquares = [{'x': 5, 'y': 0},
         {'x': 6, 'y': 0},
         {'x': 6, 'y': 1},
-        {'x': 7, 'y': 0}]
+        {'x': 7, 'y': 0}];
+        this.color = 'magenta';
     }
     rotateRight(){
         const a = this.occupiedSquares[0];
@@ -180,12 +192,13 @@ class TeePiece extends Piece {
     }
 }
 class EssPiece extends Piece {
-    constructor(occupiedSquares){
-        super(occupiedSquares);
+    constructor(occupiedSquares, color){
+        super(occupiedSquares, color);
         this.occupiedSquares = [{'x': 5, 'y': 1},
         {'x': 6, 'y': 0},
         {'x': 6, 'y': 1},
-        {'x': 7, 'y': 0}]
+        {'x': 7, 'y': 0}];
+        this.color = 'green';
     }
     rotateRight(){
         const a = this.occupiedSquares[0];
@@ -225,12 +238,13 @@ class EssPiece extends Piece {
     }
 }
 class ZeePiece extends Piece {
-    constructor(occupiedSquares){
-        super(occupiedSquares);
+    constructor(occupiedSquares, color){
+        super(occupiedSquares, color);
         this.occupiedSquares = [{'x': 5, 'y': 0},
         {'x': 6, 'y': 0},
         {'x': 6, 'y': 1},
         {'x': 7, 'y': 1}];
+        this.color = 'red';
     }
     rotateRight(){
         const a = this.occupiedSquares[0];
@@ -270,12 +284,13 @@ class ZeePiece extends Piece {
     }
 }
 class JayPiece extends Piece {
-    constructor(occupiedSquares){
-        super(occupiedSquares);
+    constructor(occupiedSquares, color){
+        super(occupiedSquares, color);
         this.occupiedSquares = [{'x': 5, 'y': 0},
         {'x': 6, 'y': 0},
         {'x': 7, 'y': 0},
-        {'x': 7, 'y': 1}]
+        {'x': 7, 'y': 1}];
+        this.color = 'blue';
     }
     rotateRight(){
         const a = this.occupiedSquares[0];
@@ -335,12 +350,13 @@ class JayPiece extends Piece {
     }
 }
 class EllPiece extends Piece {
-    constructor(occupiedSquares){
-        super(occupiedSquares);
+    constructor(occupiedSquares, color){
+        super(occupiedSquares, color);
         this.occupiedSquares = [{'x': 5, 'y': 1},
         {'x': 5, 'y': 0},
         {'x': 6, 'y': 0},
-        {'x': 7, 'y': 0}]
+        {'x': 7, 'y': 0}];
+        this.color = ellStyle;
     }
     rotateRight(){
         const a = this.occupiedSquares[0];
@@ -405,35 +421,53 @@ const constructorArr = [LinePiece, SquarePiece, TeePiece, EssPiece, ZeePiece, Ja
 const game = {
     time: 0,
     level: 1,
-    score: 9,
+    score: 0,
     speed: 1000,
-    // pieceList: pieceArr,
     arrIndex: 0,
+    linesLeft: 10,
+    lineCounter: 0,
     gameOver: false,
     // nextPiece: makeNextPiece(),
     levelUp(){
-        if(this.score % 10 == 0){
+        if(this.linesLeft == 0){
             this.level++;
             $('#level').text(`${this.level}`);
             clearInterval(timePass);
-            this.speed = this.speed - 500;
-            setInterval
+            this.speed = this.speed - 200;
+            timePass = setInterval(()=>{
+                this.gameOverEvent();
+                if(!this.gameOver){
+                    fallingPieces();
+                }
+            }, this.speed);
         }
     },
     scoreUp(){
-        this.score++;
+        if(this.lineCounter == 1){
+            this.score = this.score + (40 * this.level);
+            $('#score').text(`${this.score}`);
+            this.levelUp();
+        }else if(this.lineCounter == 2){
+            this.score = this.score + (100 * this.level);
+            $('#score').text(`${this.score}`);
+            this.levelUp();
+        }else if(this.lineCounter == 3){
+            this.score = this.score + (300 * this.level);
+            $('#score').text(`${this.score}`);
+            this.levelUp();
+        }else if(this.lineCounter == 4){
+            this.score = this.score + (1200 * this.level);
         $('#score').text(`${this.score}`);
         this.levelUp();
+        }
     },
     gameOverEvent(){
         if($(`.grid-square[y="0"]`).hasClass('bottom-piece')){
             this.gameOver == true;
+            clearInterval(timeInterval);
             clearInterval(timePass);
-            // alert('Game Over!');
-            // setInterval(makeRowBlack, 500);
             makeRowGrey(19);
             makeRestartButton();
-            console.log('still game over')
         }
         
     }
@@ -452,7 +486,7 @@ const makeRowGrey = (y)=>{
         $(`.grid-square[y="${y}"]`).addClass('dead-square');
         setTimeout(()=>{
             makeRowGrey(--y);
-        }, 100)
+        }, 30)
     }
     
 }
@@ -467,12 +501,9 @@ const playOrPauseAudio = (e)=>{
         $audio.pause();
         $(e.target).removeClass('pause-button').addClass('play-button').text('\u25B6');
     }
-    
 }
 
 const makeStats = ()=>{
-    
-    // const $audio = $('<audio loop></audio>').addClass('audio').html("<source src='tetris_theme.mp3' type='audio/mpeg'>");
     const $audioPlay = $('<button/>').addClass('play-button').text('\u25B6').click((e)=>{
         playOrPauseAudio(e)
     });
@@ -480,7 +511,7 @@ const makeStats = ()=>{
     const $level = $('<div/>').html(`<h2>Level: <span id="level">${game.level}</span></h2>`);
     const $score = $('<div/>').html(`<h2>Score: <span id="score">${game.score}</span></h2>`);
     const $nextPiece = $('<div/>').html('<h2>Next Piece: <span id="nextPiece"></span></h2>');
-    $('.stats').append($audioPlay, $timer, $level, $score, $nextPiece);
+    $('.stats').append($audioPlay, $nextPiece, $timer, $level, $score);
 }
 
 const makeGrid = ()=>{
@@ -490,7 +521,6 @@ const makeGrid = ()=>{
         
         for (let x = 0; x < 10; x++){
             const $gridSquare = $('<div/>').addClass('grid-square').attr('x',x).attr('y',y);
-            // $gridSquare.attr('coord', {x,i});
             $($gridRow).append($gridSquare);
         }
         $('.game-board').append($gridRow);
@@ -507,8 +537,9 @@ const hitBottom = function(piece){
         }
     }
     if(!notBottom){
+        piece.color = 'grey';
         $('body').off('keydown')
-        $('.moving-piece').removeClass('moving-piece').addClass('bottom-piece');
+        $('.moving-piece').removeClass('moving-piece').addClass('bottom-piece').css({'background': 'grey', 'border': ''});
         return true;
     }
     return false;
@@ -524,8 +555,9 @@ const hitOtherPiece = function(piece){
         }
     }
     if(!eligibleToMove){
+        piece.color = 'grey';
         $('body').off('keydown')
-        $('.moving-piece').removeClass('moving-piece').addClass('bottom-piece');
+        $('.moving-piece').removeClass('moving-piece').addClass('bottom-piece').css({'background': 'grey', 'border': ''});
         return true;
     }
     return false;
@@ -533,7 +565,7 @@ const hitOtherPiece = function(piece){
 
 const createPiece = ()=>{
     let randIndex = Math.floor(Math.random()*constructorArr.length);
-    // randIndex = 1;
+    // randIndex = 6;
     const currentPiece = new constructorArr[randIndex]();
     return currentPiece;
 }
@@ -552,12 +584,8 @@ const whichKey = (e)=>{
         }
 }
 
-const renderBoard = ()=>{
-
-}
-
 const removeLine = ()=>{
-    
+    // let counter = 0;
     for(let y = 19; y > -1; y--){
         let occupied = 0;
         for(let x = 0; x < 10; x++){
@@ -566,41 +594,59 @@ const removeLine = ()=>{
             }
         }
         if(occupied == 10){
-            $(`.bottom-piece[y="${y}"]`).removeClass('bottom-piece');
+            $(`.bottom-piece[y="${y}"]`).removeClass('bottom-piece').css({'background': '', 'border': ''});
             for(let i = y; i > -1; i--){
                 for(let x = 0; x < 11; x++){
                     let thisPiece = $(`.grid-square[x="${x}"][y="${i}"]`);
                     let previousPiece = $(`.grid-square[x="${x}"][y="${i - 1}"]`);
                     if($(`.grid-square[x="${x}"][y="${i - 1}"]`).hasClass('bottom-piece')){
                         thisPiece.addClass('bottom-piece');
-                        previousPiece.removeClass('bottom-piece');
+                        previousPiece.removeClass('bottom-piece').css({'background': '', 'border': ''});
                     }
                 }
             }
-            game.scoreUp();
+            game.lineCounter++;
+            // game.scoreUpOneLine();
         }
     }
 }
 
-const makeNextPiece = ()=>{
-    const nextPiece = createPiece();
-    $('#nextPiece').append(nextPiece);
-    // return nextPiece;
+const makeNextGrid = ()=>{
+    for (let y = 0; y < 4; y++){
+        const $gridRow = $('<div/>').addClass('mini-row');
+        for (let x = 0; x < 4; x++){
+            const $gridSquare = $('<div/>').addClass('mini-square').attr('x',x).attr('y',y);
+            $($gridRow).append($gridSquare);
+            console.log($gridSquare);
+        }
+        $('#nextPiece').append($gridRow);
+    }
+}
+
+const showNextPiece = (nextPiece)=>{
+    // const nextPiece = createPiece();
+    $('.next-piece').removeClass('next-piece');
+    for (let i = 0; i < nextPiece.occupiedSquares.length; i++){
+        // console.log(nextPiece.occupiedSquares[i])
+        $(`.mini-square[x="${nextPiece.occupiedSquares[i].x}"][y="${nextPiece.occupiedSquares[i].y}"]`).text('next').addClass('next-piece');
+    }
 }
 
 const startRoutine = (e)=>{
+    timeInterval = setInterval(()=>{
+        game.time++;
+    $('#timer').text(`${game.time}`);
+    }, 1000);
     $(e.target).hide();
     $('.stats').empty();
     $('.game-board').empty();
     game.time = 0;
-    game.level = 0;
+    game.level = 1;
     game.speed = 1000;
-    game.score = 0;
-    makeGrid();
-    console.log($('.grid-square')[0])
+    game.score = 9;
     makeStats();
-    
-    // timePass = whichInterval();
+    makeNextGrid();
+    makeGrid();
     
     timePass = setInterval(()=>{
         game.gameOverEvent();
@@ -608,17 +654,20 @@ const startRoutine = (e)=>{
             fallingPieces();
         }
     }, game.speed);
-    miniInterval = setInterval(removeLine,100);
+
+    miniInterval = setInterval(()=>{
+        removeLine();
+        game.scoreUp();
+        game.lineCounter = 0;
+    },100);
 }
 
 let currentPiece = createPiece();
 let nextPiece = createPiece();
 
 const fallingPieces = ()=>{
-    game.time++;
-    $('#timer').text(`${game.time}`);
-    $('#nextPiece').append(nextPiece);
     currentPiece.render();
+    // showNextPiece(nextPiece);
     if(hitBottom(currentPiece) || hitOtherPiece(currentPiece)){
         currentPiece = nextPiece;
         nextPiece = createPiece();
@@ -633,11 +682,11 @@ const fallingPieces = ()=>{
    
 }
 
-
+let timeInterval;
 let timePass;
 let miniInterval;
 
-$('#start-button').click((e)=>{
+$('#startButton').click((e)=>{
    startRoutine(e);
 })
 
