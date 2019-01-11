@@ -496,7 +496,7 @@ const makeRestartButton = ()=>{
 
 const makeRowGrey = (y)=>{
     if(y > -1){
-        $('.grid-square').removeClass('bottom-piece');
+        // $('.grid-square').removeClass('bottom-piece').css('background','');
         $(`.grid-square[y="${y}"]`).addClass('dead-square');
         setTimeout(()=>{
             makeRowGrey(--y);
@@ -525,10 +525,11 @@ const makeStats = ()=>{
     const $level = $('<div/>').html(`<h2>Level: <span id="level">${game.level}</span></h2>`);
     const $lines = $('<div/>').html(`<h2>Lines: <span id="lines">${game.linesPerLevel}</span></h2>`);
     const $score = $('<div/>').html(`<h2>Score: <span id="score">${game.score}</span></h2>`);
+    const $controls = $('<div/>').html('<h5>Controls:<br>Z Button -> Rotate left<br>X Button -> Rotate right<br>Arrow keys -> Move/Drop</h5>')
     // const $nextPiece = $('<div/>').html('<h2>Next Piece: <span id="nextPiece"></span></h2>');
     $('.stats').append($audioPlay, $score,
         //  $nextPiece, 
-         $timer, $level, $lines);
+         $timer, $level, $lines, $controls);
 }
 
 const makeGrid = ()=>{
@@ -605,7 +606,7 @@ const hitOtherPiece = function(piece){
 
 const createPiece = ()=>{
     let randIndex = Math.floor(Math.random()*constructorArr.length);
-    randIndex = 0;
+    // randIndex = 0;
     const currentPiece = new constructorArr[randIndex]();
     return currentPiece;
 }
@@ -684,6 +685,7 @@ const startRoutine = (e)=>{
     game.level = 1;
     game.speed = 1000;
     game.score = 0;
+    game.linesPerLevel = 0;
     makeStats();
     // makeNextGrid();
     makeGrid();

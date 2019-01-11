@@ -9,10 +9,16 @@ h1{
     display: block;
     font-family: Tetris;
     font-size: 5em;
+    margin-bottom: -5px;
 }
 
 h2{
     color: lightgray;
+}
+
+h5{
+    color: lightgray;
+    line-height: 1.5em;
 }
 
 .title-div{
@@ -79,7 +85,7 @@ div.bottom-piece{
     border: 1px solid white;
 } */
 
-.dead-square{
+div.dead-square{
     background: grey;
     border: 1px solid white;
 }
