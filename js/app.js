@@ -62,13 +62,19 @@ class Piece {
         this.render();
     }
 }
-
+// const lineStyle = 'background-image: url("lineStyle.jpg")'
+// const squareStyle = 'background-image: url("squareStyle.jpg")'
+// const teeStyle = 'background-image: url("teeStyle.jpg")'
+// const essStyle = 'background-image: url("essStyle.jpg")'
+// const zeeStyle = 'background-image: url("zeeStyle.jpg")'
+// const jayStyle = 'background-image: url("jayStyle.jpg")'
+// const ellStyle = 'background-image: url("ellStyle.jpg")'
 const lineStyle = 'background: #84C26D; border: 1px solid black';
 const squareStyle = 'background: black; border: 3px solid white';
-const teeStyle = '';
-const essStyle = '';
-const zeeStyle = '';
-const jayStyle = '';
+const teeStyle = 'background: #96B781; border: 1px solid black';
+const essStyle = 'background: #2D6A4E; border: 3px solid #375B54';
+const zeeStyle = 'background: black; border: 4px solid #88BB73';
+const jayStyle = 'background: white; border: 3px solid #8DAA79';
 const ellStyle = 'background: #2D6A4E; border: 2px solid black';
 
 class LinePiece extends Piece {
@@ -81,32 +87,40 @@ class LinePiece extends Piece {
         this.color = lineStyle;
     }
     rotateRight(){
-        if(this.occupiedSquares[0].x < this.occupiedSquares[1].x){
-            this.occupiedSquares = [{'x': this.occupiedSquares[0].x + 1, 'y':this.occupiedSquares[0].y - 1},
-        {'x': this.occupiedSquares[1].x, 'y':this.occupiedSquares[1].y},
-        {'x': this.occupiedSquares[2].x - 1, 'y':this.occupiedSquares[2].y + 1},
-        {'x': this.occupiedSquares[3].x - 2, 'y':this.occupiedSquares[3].y + 2}]
-        }else{
-            this.occupiedSquares = [{'x': this.occupiedSquares[0].x - 1, 'y':this.occupiedSquares[0].y + 1},
-        {'x': this.occupiedSquares[1].x, 'y':this.occupiedSquares[1].y},
-        {'x': this.occupiedSquares[2].x + 1, 'y':this.occupiedSquares[2].y - 1},
-        {'x': this.occupiedSquares[3].x + 2, 'y':this.occupiedSquares[3].y - 2}]
+        const edgeCase = edgeCaseCheck(this);
+        const bottomCase = bottomCaseCheck(this);
+        if(!edgeCase && !bottomCase){
+            if(this.occupiedSquares[0].x < this.occupiedSquares[1].x){
+                this.occupiedSquares = [{'x': this.occupiedSquares[0].x + 1, 'y':this.occupiedSquares[0].y - 1},
+            {'x': this.occupiedSquares[1].x, 'y':this.occupiedSquares[1].y},
+            {'x': this.occupiedSquares[2].x - 1, 'y':this.occupiedSquares[2].y + 1},
+            {'x': this.occupiedSquares[3].x - 2, 'y':this.occupiedSquares[3].y + 2}]
+            }else{
+                this.occupiedSquares = [{'x': this.occupiedSquares[0].x - 1, 'y':this.occupiedSquares[0].y + 1},
+            {'x': this.occupiedSquares[1].x, 'y':this.occupiedSquares[1].y},
+            {'x': this.occupiedSquares[2].x + 1, 'y':this.occupiedSquares[2].y - 1},
+            {'x': this.occupiedSquares[3].x + 2, 'y':this.occupiedSquares[3].y - 2}]
+            }
+            this.render();
         }
-        this.render();
     }
     rotateLeft(){
-        if(this.occupiedSquares[0].x < this.occupiedSquares[1].x){
-            this.occupiedSquares = [{'x': this.occupiedSquares[0].x + 1, 'y':this.occupiedSquares[0].y - 1},
-        {'x': this.occupiedSquares[1].x, 'y':this.occupiedSquares[1].y},
-        {'x': this.occupiedSquares[2].x - 1, 'y':this.occupiedSquares[2].y + 1},
-        {'x': this.occupiedSquares[3].x - 2, 'y':this.occupiedSquares[3].y + 2}]
-        }else{
-            this.occupiedSquares = [{'x': this.occupiedSquares[0].x - 1, 'y':this.occupiedSquares[0].y + 1},
-        {'x': this.occupiedSquares[1].x, 'y':this.occupiedSquares[1].y},
-        {'x': this.occupiedSquares[2].x + 1, 'y':this.occupiedSquares[2].y - 1},
-        {'x': this.occupiedSquares[3].x + 2, 'y':this.occupiedSquares[3].y - 2}]
+        const edgeCase = edgeCaseCheck(this)
+        const bottomCase = bottomCaseCheck(this);
+        if(!edgeCase && !bottomCase){
+            if(this.occupiedSquares[0].x < this.occupiedSquares[1].x){
+                this.occupiedSquares = [{'x': this.occupiedSquares[0].x + 1, 'y':this.occupiedSquares[0].y - 1},
+            {'x': this.occupiedSquares[1].x, 'y':this.occupiedSquares[1].y},
+            {'x': this.occupiedSquares[2].x - 1, 'y':this.occupiedSquares[2].y + 1},
+            {'x': this.occupiedSquares[3].x - 2, 'y':this.occupiedSquares[3].y + 2}]
+            }else{
+                this.occupiedSquares = [{'x': this.occupiedSquares[0].x - 1, 'y':this.occupiedSquares[0].y + 1},
+            {'x': this.occupiedSquares[1].x, 'y':this.occupiedSquares[1].y},
+            {'x': this.occupiedSquares[2].x + 1, 'y':this.occupiedSquares[2].y - 1},
+            {'x': this.occupiedSquares[3].x + 2, 'y':this.occupiedSquares[3].y - 2}]
+            }
+            this.render();
         }
-        this.render();
     }
 }
 class SquarePiece extends Piece {
@@ -132,7 +146,7 @@ class TeePiece extends Piece {
         {'x': 6, 'y': 0},
         {'x': 6, 'y': 1},
         {'x': 7, 'y': 0}];
-        this.color = 'magenta';
+        this.color = teeStyle;
     }
     rotateRight(){
         const a = this.occupiedSquares[0];
@@ -198,7 +212,7 @@ class EssPiece extends Piece {
         {'x': 6, 'y': 0},
         {'x': 6, 'y': 1},
         {'x': 7, 'y': 0}];
-        this.color = 'green';
+        this.color = essStyle;
     }
     rotateRight(){
         const a = this.occupiedSquares[0];
@@ -244,7 +258,7 @@ class ZeePiece extends Piece {
         {'x': 6, 'y': 0},
         {'x': 6, 'y': 1},
         {'x': 7, 'y': 1}];
-        this.color = 'red';
+        this.color = zeeStyle;
     }
     rotateRight(){
         const a = this.occupiedSquares[0];
@@ -290,7 +304,7 @@ class JayPiece extends Piece {
         {'x': 6, 'y': 0},
         {'x': 7, 'y': 0},
         {'x': 7, 'y': 1}];
-        this.color = 'blue';
+        this.color = jayStyle;
     }
     rotateRight(){
         const a = this.occupiedSquares[0];
@@ -422,14 +436,14 @@ const game = {
     time: 0,
     level: 1,
     score: 0,
+    linesPerLevel: 0,
     speed: 1000,
     arrIndex: 0,
-    linesLeft: 10,
     lineCounter: 0,
     gameOver: false,
     // nextPiece: makeNextPiece(),
     levelUp(){
-        if(this.linesLeft == 0){
+        if(this.linesPerLevel % 10 == 0){
             this.level++;
             $('#level').text(`${this.level}`);
             clearInterval(timePass);
@@ -509,9 +523,12 @@ const makeStats = ()=>{
     });
     const $timer = $('<div/>').html(`<h2>Time: <span id="timer">${game.time}</span></h2>`);
     const $level = $('<div/>').html(`<h2>Level: <span id="level">${game.level}</span></h2>`);
+    const $lines = $('<div/>').html(`<h2>Lines: <span id="lines">${game.linesPerLevel}</span></h2>`);
     const $score = $('<div/>').html(`<h2>Score: <span id="score">${game.score}</span></h2>`);
-    const $nextPiece = $('<div/>').html('<h2>Next Piece: <span id="nextPiece"></span></h2>');
-    $('.stats').append($audioPlay, $nextPiece, $timer, $level, $score);
+    // const $nextPiece = $('<div/>').html('<h2>Next Piece: <span id="nextPiece"></span></h2>');
+    $('.stats').append($audioPlay, $score,
+        //  $nextPiece, 
+         $timer, $level, $lines);
 }
 
 const makeGrid = ()=>{
@@ -527,6 +544,29 @@ const makeGrid = ()=>{
     }
 }
 
+const edgeCaseCheck = (obj)=>{
+    let edgeCase = false;
+    let coords = obj.occupiedSquares;
+    for(let i = 0; i < coords.length - 1; i++){
+        if(coords[i].x == coords[i+1].x && 
+            (coords[i].x == 0 || coords[coords.length - 1].x >= 8)){
+            edgeCase = true;
+        }
+    }
+    return edgeCase;
+}
+
+const bottomCaseCheck = (obj)=>{
+    let bottomCase = false;
+    let coords = obj.occupiedSquares;
+    for(let i = 0; i < coords.length - 1; i++){
+        if(coords[i].y == coords[i+1].y && parseInt(coords[i].y) > 17){
+            bottomCase = true;
+        }
+    }
+    return bottomCase;
+}
+
 const hitBottom = function(piece){
     const coordArr = piece.occupiedSquares;
     let notBottom = true;
@@ -537,7 +577,7 @@ const hitBottom = function(piece){
         }
     }
     if(!notBottom){
-        piece.color = 'grey';
+        // piece.color = 'grey';
         $('body').off('keydown')
         $('.moving-piece').removeClass('moving-piece').addClass('bottom-piece').css({'background': 'grey', 'border': ''});
         return true;
@@ -555,7 +595,7 @@ const hitOtherPiece = function(piece){
         }
     }
     if(!eligibleToMove){
-        piece.color = 'grey';
+        // piece.color = 'grey';
         $('body').off('keydown')
         $('.moving-piece').removeClass('moving-piece').addClass('bottom-piece').css({'background': 'grey', 'border': ''});
         return true;
@@ -565,7 +605,7 @@ const hitOtherPiece = function(piece){
 
 const createPiece = ()=>{
     let randIndex = Math.floor(Math.random()*constructorArr.length);
-    // randIndex = 6;
+    randIndex = 0;
     const currentPiece = new constructorArr[randIndex]();
     return currentPiece;
 }
@@ -585,7 +625,6 @@ const whichKey = (e)=>{
 }
 
 const removeLine = ()=>{
-    // let counter = 0;
     for(let y = 19; y > -1; y--){
         let occupied = 0;
         for(let x = 0; x < 10; x++){
@@ -593,44 +632,45 @@ const removeLine = ()=>{
                 occupied++;
             }
         }
+        // console.log(occupied);
         if(occupied == 10){
-            $(`.bottom-piece[y="${y}"]`).removeClass('bottom-piece').css({'background': '', 'border': ''});
+            $(`.bottom-piece[y="${y}"]`).removeClass('bottom-piece').css('background','');
             for(let i = y; i > -1; i--){
                 for(let x = 0; x < 11; x++){
                     let thisPiece = $(`.grid-square[x="${x}"][y="${i}"]`);
                     let previousPiece = $(`.grid-square[x="${x}"][y="${i - 1}"]`);
                     if($(`.grid-square[x="${x}"][y="${i - 1}"]`).hasClass('bottom-piece')){
                         thisPiece.addClass('bottom-piece');
-                        previousPiece.removeClass('bottom-piece').css({'background': '', 'border': ''});
+                        previousPiece.removeClass('bottom-piece').css('background','');
                     }
                 }
             }
             game.lineCounter++;
-            // game.scoreUpOneLine();
+            game.linesPerLevel++;
+            $('#lines').text(`${game.linesPerLevel}`);
         }
     }
 }
 
-const makeNextGrid = ()=>{
-    for (let y = 0; y < 4; y++){
-        const $gridRow = $('<div/>').addClass('mini-row');
-        for (let x = 0; x < 4; x++){
-            const $gridSquare = $('<div/>').addClass('mini-square').attr('x',x).attr('y',y);
-            $($gridRow).append($gridSquare);
-            console.log($gridSquare);
-        }
-        $('#nextPiece').append($gridRow);
-    }
-}
+// const makeNextGrid = ()=>{
+//     for (let y = 0; y < 4; y++){
+//         const $gridRow = $('<div/>').addClass('mini-row');
+//         for (let x = 0; x < 4; x++){
+//             const $gridSquare = $('<div/>').addClass('mini-square').attr('x',x).attr('y',y);
+//             $($gridRow).append($gridSquare);
+//         }
+//         $('#nextPiece').append($gridRow);
+//     }
+// }
 
-const showNextPiece = (nextPiece)=>{
-    // const nextPiece = createPiece();
-    $('.next-piece').removeClass('next-piece');
-    for (let i = 0; i < nextPiece.occupiedSquares.length; i++){
-        // console.log(nextPiece.occupiedSquares[i])
-        $(`.mini-square[x="${nextPiece.occupiedSquares[i].x}"][y="${nextPiece.occupiedSquares[i].y}"]`).text('next').addClass('next-piece');
-    }
-}
+// const showNextPiece = (nextPiece)=>{
+//     // const nextPiece = createPiece();
+//     $('.next-piece').removeClass('next-piece');
+//     for (let i = 0; i < nextPiece.occupiedSquares.length; i++){
+//         // console.log(nextPiece.occupiedSquares[i])
+//         $(`.mini-square[x="${nextPiece.occupiedSquares[i].x}"][y="${nextPiece.occupiedSquares[i].y}"]`).text('next').addClass('next-piece');
+//     }
+// }
 
 const startRoutine = (e)=>{
     timeInterval = setInterval(()=>{
@@ -643,9 +683,9 @@ const startRoutine = (e)=>{
     game.time = 0;
     game.level = 1;
     game.speed = 1000;
-    game.score = 9;
+    game.score = 0;
     makeStats();
-    makeNextGrid();
+    // makeNextGrid();
     makeGrid();
     
     timePass = setInterval(()=>{

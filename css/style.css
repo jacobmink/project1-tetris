@@ -11,11 +11,15 @@ h1{
     font-size: 5em;
 }
 
+h2{
+    color: lightgray;
+}
+
 .title-div{
     background: #E3F8D7;
     padding: 0;
     border: 3px solid #071820;
-    width: 50%;
+    width: auto;
     margin: 0 auto;
 }
 
@@ -23,11 +27,15 @@ body{
     background-color: #071820;
 }
 
+.game-board{
+    text-align: center;
+}
+
 .stats{
     width: auto;
 }
 
-.grid-square{
+div.grid-square{
     background: #DFF8D0;
     border: 1px solid #DFF8D0;
     width: 25px;
@@ -58,19 +66,18 @@ body{
 }
 
 .moving-piece{
-    /* background: black; */
+    background: black;
     border: 1px solid white;
 }
 
 div.bottom-piece{
     background: grey;
-    /* border: 1px solid blue; */
 }
 
-.next-piece{
-    /* background: black; */
+/* .next-piece{
+     background: black;
     border: 1px solid white;
-}
+} */
 
 .dead-square{
     background: grey;
