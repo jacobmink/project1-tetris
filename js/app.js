@@ -655,7 +655,7 @@ const hitOtherPiece = function(piece){
 
 const createPiece = ()=>{
     let randIndex = Math.floor(Math.random()*constructorArr.length);
-    randIndex = 4;
+    // randIndex = 4;
     const currentPiece = new constructorArr[randIndex]();
     return currentPiece;
 }
