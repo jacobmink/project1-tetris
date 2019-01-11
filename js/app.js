@@ -87,7 +87,7 @@ class LinePiece extends Piece {
         this.color = lineStyle;
     }
     rotateRight(){
-        const edgeCase = edgeCaseCheck(this);
+        const edgeCase = edgeCaseCheck(this, 8);
         const bottomCase = bottomCaseCheck(this);
         if(!edgeCase && !bottomCase){
             if(this.occupiedSquares[0].x < this.occupiedSquares[1].x){
@@ -103,9 +103,12 @@ class LinePiece extends Piece {
             }
             this.render();
         }
+        // else if(!edgeCase && bottomCase){
+
+        // }
     }
     rotateLeft(){
-        const edgeCase = edgeCaseCheck(this)
+        const edgeCase = edgeCaseCheck(this, 8)
         const bottomCase = bottomCaseCheck(this);
         if(!edgeCase && !bottomCase){
             if(this.occupiedSquares[0].x < this.occupiedSquares[1].x){
@@ -153,56 +156,64 @@ class TeePiece extends Piece {
         const b = this.occupiedSquares[1];
         const c = this.occupiedSquares[2];
         const d = this.occupiedSquares[3];
-        if(a.x < b.x){
-            this.occupiedSquares = [{'x': a.x + 1, 'y': a.y - 1},
-            {'x': b.x, 'y': b.y},
-            {'x': c.x - 1, 'y': c.y - 1},
-            {'x': d.x - 1, 'y': d.y + 1}]
-        }else if(a.x == b.x && a.y < b.y){
-            this.occupiedSquares = [{'x': a.x + 1, 'y': a.y + 1},
-            {'x': b.x, 'y': b.y},
-            {'x': c.x + 1, 'y': c.y - 1},
-            {'x': d.x - 1, 'y': d.y - 1}]
-        }else if(a.x > b.x){
-            this.occupiedSquares = [{'x': a.x - 1, 'y': a.y + 1},
-            {'x': b.x, 'y': b.y},
-            {'x': c.x + 1, 'y': c.y + 1},
-            {'x': d.x + 1, 'y': d.y - 1}]
-        }else{
-            this.occupiedSquares = [{'x': a.x - 1, 'y': a.y - 1},
-            {'x': b.x, 'y': b.y},
-            {'x': c.x - 1, 'y': c.y + 1},
-            {'x': d.x + 1, 'y': d.y + 1}]
+        const edgeCase = edgeCaseCheck(this, 9);
+        const bottomCase = bottomCaseCheck(this);
+        if(!edgeCase && !bottomCase){
+            if(a.x < b.x){
+                this.occupiedSquares = [{'x': a.x + 1, 'y': a.y - 1},
+                {'x': b.x, 'y': b.y},
+                {'x': c.x - 1, 'y': c.y - 1},
+                {'x': d.x - 1, 'y': d.y + 1}]
+            }else if(a.x == b.x && a.y < b.y){
+                this.occupiedSquares = [{'x': a.x + 1, 'y': a.y + 1},
+                {'x': b.x, 'y': b.y},
+                {'x': c.x + 1, 'y': c.y - 1},
+                {'x': d.x - 1, 'y': d.y - 1}]
+            }else if(a.x > b.x){
+                this.occupiedSquares = [{'x': a.x - 1, 'y': a.y + 1},
+                {'x': b.x, 'y': b.y},
+                {'x': c.x + 1, 'y': c.y + 1},
+                {'x': d.x + 1, 'y': d.y - 1}]
+            }else{
+                this.occupiedSquares = [{'x': a.x - 1, 'y': a.y - 1},
+                {'x': b.x, 'y': b.y},
+                {'x': c.x - 1, 'y': c.y + 1},
+                {'x': d.x + 1, 'y': d.y + 1}]
+            }
+            this.render();
         }
-        this.render();
     }
     rotateLeft(){
         const a = this.occupiedSquares[0];
         const b = this.occupiedSquares[1];
         const c = this.occupiedSquares[2];
         const d = this.occupiedSquares[3];
-        if(a.x < b.x){
-            this.occupiedSquares = [{'x': a.x + 1, 'y': a.y + 1},
-            {'x': b.x, 'y': b.y},
-            {'x': c.x + 1, 'y': c.y - 1},
-            {'x': d.x - 1, 'y': d.y - 1}]
-        }else if(a.x == b.x && a.y < b.y){
-            this.occupiedSquares = [{'x': a.x - 1, 'y': a.y + 1},
-            {'x': b.x, 'y': b.y},
-            {'x': c.x + 1, 'y': c.y + 1},
-            {'x': d.x + 1, 'y': d.y - 1}]
-        }else if(a.x > b.x){
-            this.occupiedSquares = [{'x': a.x - 1, 'y': a.y - 1},
-            {'x': b.x, 'y': b.y},
-            {'x': c.x - 1, 'y': c.y + 1},
-            {'x': d.x + 1, 'y': d.y + 1}]
-        }else{
-            this.occupiedSquares = [{'x': a.x + 1, 'y': a.y - 1},
-            {'x': b.x, 'y': b.y},
-            {'x': c.x - 1, 'y': c.y - 1},
-            {'x': d.x - 1, 'y': d.y + 1}]
+        const edgeCase = edgeCaseCheck(this, 9);
+        const bottomCase = bottomCaseCheck(this);
+        if(!edgeCase && !bottomCase){
+            if(a.x < b.x){
+                this.occupiedSquares = [{'x': a.x + 1, 'y': a.y + 1},
+                {'x': b.x, 'y': b.y},
+                {'x': c.x + 1, 'y': c.y - 1},
+                {'x': d.x - 1, 'y': d.y - 1}]
+            }else if(a.x == b.x && a.y < b.y){
+                this.occupiedSquares = [{'x': a.x - 1, 'y': a.y + 1},
+                {'x': b.x, 'y': b.y},
+                {'x': c.x + 1, 'y': c.y + 1},
+                {'x': d.x + 1, 'y': d.y - 1}]
+            }else if(a.x > b.x){
+                this.occupiedSquares = [{'x': a.x - 1, 'y': a.y - 1},
+                {'x': b.x, 'y': b.y},
+                {'x': c.x - 1, 'y': c.y + 1},
+                {'x': d.x + 1, 'y': d.y + 1}]
+            }else{
+                this.occupiedSquares = [{'x': a.x + 1, 'y': a.y - 1},
+                {'x': b.x, 'y': b.y},
+                {'x': c.x - 1, 'y': c.y - 1},
+                {'x': d.x - 1, 'y': d.y + 1}]
+            }
+            this.render();
         }
-        this.render();
     }
 }
 class EssPiece extends Piece {
@@ -311,64 +322,72 @@ class JayPiece extends Piece {
         const b = this.occupiedSquares[1];
         const c = this.occupiedSquares[2];
         const d = this.occupiedSquares[3];
-        if(a.x < b.x){
-            this.occupiedSquares = [{'x': a.x + 1, 'y': a.y - 1},
-            {'x': b.x, 'y': b.y},
-            {'x': c.x - 1, 'y': c.y + 1},
-            {'x': d.x - 2, 'y': d.y}]
-        }else if(a.x == b.x && a.y < b.y){
-            this.occupiedSquares = [{'x': a.x + 1, 'y': a.y + 1},
-            {'x': b.x, 'y': b.y},
-            {'x': c.x - 1, 'y': c.y - 1},
-            {'x': d.x, 'y': d.y - 2}]
-        }else if(a.x > b.x){
-            this.occupiedSquares = [{'x': a.x - 1, 'y': a.y + 1},
-            {'x': b.x, 'y': b.y},
-            {'x': c.x + 1, 'y': c.y - 1},
-            {'x': d.x + 2, 'y': d.y}]
-        }else{
-            this.occupiedSquares = [{'x': a.x - 1, 'y': a.y - 1},
-            {'x': b.x, 'y': b.y},
-            {'x': c.x + 1, 'y': c.y + 1},
-            {'x': d.x, 'y': d.y + 2}]
+        const edgeCase = edgeCaseCheck(this, 9);
+        const bottomCase = bottomCaseCheck(this);
+        if(!edgeCase && !bottomCase){
+            if(a.x < b.x){
+                this.occupiedSquares = [{'x': a.x + 1, 'y': a.y - 1},
+                {'x': b.x, 'y': b.y},
+                {'x': c.x - 1, 'y': c.y + 1},
+                {'x': d.x - 2, 'y': d.y}]
+            }else if(a.x == b.x && a.y < b.y){
+                this.occupiedSquares = [{'x': a.x + 1, 'y': a.y + 1},
+                {'x': b.x, 'y': b.y},
+                {'x': c.x - 1, 'y': c.y - 1},
+                {'x': d.x, 'y': d.y - 2}]
+            }else if(a.x > b.x){
+                this.occupiedSquares = [{'x': a.x - 1, 'y': a.y + 1},
+                {'x': b.x, 'y': b.y},
+                {'x': c.x + 1, 'y': c.y - 1},
+                {'x': d.x + 2, 'y': d.y}]
+            }else{
+                this.occupiedSquares = [{'x': a.x - 1, 'y': a.y - 1},
+                {'x': b.x, 'y': b.y},
+                {'x': c.x + 1, 'y': c.y + 1},
+                {'x': d.x, 'y': d.y + 2}]
+            }
+            this.render();
         }
-        this.render();
     }
     rotateLeft(){
         const a = this.occupiedSquares[0];
         const b = this.occupiedSquares[1];
         const c = this.occupiedSquares[2];
         const d = this.occupiedSquares[3];
-        if(a.x < b.x){
-            this.occupiedSquares = [{'x': a.x + 1, 'y': a.y + 1},
-            {'x': b.x, 'y': b.y},
-            {'x': c.x - 1, 'y': c.y - 1},
-            {'x': d.x, 'y': d.y - 2}]
-        }else if(a.x == b.x && a.y < b.y){
-            this.occupiedSquares = [{'x': a.x - 1, 'y': a.y + 1},
-            {'x': b.x, 'y': b.y},
-            {'x': c.x + 1, 'y': c.y - 1},
-            {'x': d.x + 2, 'y': d.y}]
-        }else if(a.x > b.x){
-            this.occupiedSquares = [{'x': a.x - 1, 'y': a.y - 1},
-            {'x': b.x, 'y': b.y},
-            {'x': c.x + 1, 'y': c.y + 1},
-            {'x': d.x, 'y': d.y + 2}]
-        }else{
-            this.occupiedSquares = [{'x': a.x + 1, 'y': a.y - 1},
-            {'x': b.x, 'y': b.y},
-            {'x': c.x - 1, 'y': c.y + 1},
-            {'x': d.x - 2, 'y': d.y}]
-        }
-        this.render();
+        const edgeCase = edgeCaseCheck(this, 9);
+        const bottomCase = bottomCaseCheck(this);
+        if(!edgeCase && !bottomCase){
+            if(a.x < b.x){
+                this.occupiedSquares = [{'x': a.x + 1, 'y': a.y + 1},
+                {'x': b.x, 'y': b.y},
+                {'x': c.x - 1, 'y': c.y - 1},
+                {'x': d.x, 'y': d.y - 2}]
+            }else if(a.x == b.x && a.y < b.y){
+                this.occupiedSquares = [{'x': a.x - 1, 'y': a.y + 1},
+                {'x': b.x, 'y': b.y},
+                {'x': c.x + 1, 'y': c.y - 1},
+                {'x': d.x + 2, 'y': d.y}]
+            }else if(a.x > b.x){
+                this.occupiedSquares = [{'x': a.x - 1, 'y': a.y - 1},
+                {'x': b.x, 'y': b.y},
+                {'x': c.x + 1, 'y': c.y + 1},
+                {'x': d.x, 'y': d.y + 2}]
+            }else{
+                this.occupiedSquares = [{'x': a.x + 1, 'y': a.y - 1},
+                {'x': b.x, 'y': b.y},
+                {'x': c.x - 1, 'y': c.y + 1},
+                {'x': d.x - 2, 'y': d.y}]
+            }
+            this.render();
+        }   
     }
 }
 class EllPiece extends Piece {
     constructor(occupiedSquares, color){
         super(occupiedSquares, color);
         this.occupiedSquares = [{'x': 5, 'y': 1},
-        {'x': 5, 'y': 0},
-        {'x': 6, 'y': 0},
+        {'x': 6, 'y': 1},
+        {'x': 7, 'y': 1},
         {'x': 7, 'y': 0}];
         this.color = ellStyle;
     }
@@ -377,56 +396,64 @@ class EllPiece extends Piece {
         const b = this.occupiedSquares[1];
         const c = this.occupiedSquares[2];
         const d = this.occupiedSquares[3];
-        if(b.x < c.x){
-            this.occupiedSquares = [{'x': a.x, 'y': a.y - 2},
-            {'x': b.x + 1, 'y': b.y - 1},
-            {'x': c.x, 'y': c.y},
-            {'x': d.x - 1, 'y': d.y + 1}]
-        }else if(b.x == c.x && b.y < c.y){
-            this.occupiedSquares = [{'x': a.x + 2, 'y': a.y},
-            {'x': b.x + 1, 'y': b.y + 1},
-            {'x': c.x, 'y': c.y},
-            {'x': d.x - 1, 'y': d.y - 1}]
-        }else if(b.x > c.x){
-            this.occupiedSquares = [{'x': a.x, 'y': a.y + 2},
-            {'x': b.x - 1, 'y': b.y + 1},
-            {'x': c.x, 'y': c.y},
-            {'x': d.x + 1, 'y': d.y - 1}]
-        }else{
-            this.occupiedSquares = [{'x': a.x - 2, 'y': a.y},
-            {'x': b.x - 1, 'y': b.y - 1},
-            {'x': c.x, 'y': c.y},
-            {'x': d.x + 1, 'y': d.y + 1}]
+        const edgeCase = edgeCaseCheck(this, 9);
+        const bottomCase = bottomCaseCheck(this);
+        if(!edgeCase && !bottomCase){
+            if(a.x < b.x){
+                this.occupiedSquares = [{'x': a.x + 1, 'y': a.y - 1},
+                {'x': b.x, 'y': b.y},
+                {'x': c.x - 1, 'y': c.y + 1},
+                {'x': d.x, 'y': d.y + 2}]
+            }else if(a.x == b.x && a.y < b.y){
+                this.occupiedSquares = [{'x': a.x + 1, 'y': a.y + 1},
+                {'x': b.x, 'y': b.y},
+                {'x': c.x - 1, 'y': c.y - 1},
+                {'x': d.x - 2, 'y': d.y}]
+            }else if(a.x > b.x){
+                this.occupiedSquares = [{'x': a.x - 1, 'y': a.y + 1},
+                {'x': b.x, 'y': b.y},
+                {'x': c.x + 1, 'y': c.y - 1},
+                {'x': d.x, 'y': d.y - 2}]
+            }else{
+                this.occupiedSquares = [{'x': a.x - 1, 'y': a.y - 1},
+                {'x': b.x, 'y': b.y},
+                {'x': c.x + 1, 'y': c.y + 1},
+                {'x': d.x + 2, 'y': d.y}]
+            }
+            this.render();
         }
-        this.render();
     }
     rotateLeft(){
         const a = this.occupiedSquares[0];
         const b = this.occupiedSquares[1];
         const c = this.occupiedSquares[2];
         const d = this.occupiedSquares[3];
-        if(b.x < c.x){
-            this.occupiedSquares = [{'x': a.x + 2, 'y': a.y},
-            {'x': b.x + 1, 'y': b.y + 1},
-            {'x': c.x, 'y': c.y},
-            {'x': d.x - 1, 'y': d.y - 1}]
-        }else if(b.x == c.x && b.y < c.y){
-            this.occupiedSquares = [{'x': a.x, 'y': a.y + 2},
-            {'x': b.x - 1, 'y': b.y + 1},
-            {'x': c.x, 'y': c.y},
-            {'x': d.x + 1, 'y': d.y - 1}]
-        }else if(b.x > c.x){
-            this.occupiedSquares = [{'x': a.x - 2, 'y': a.y},
-            {'x': b.x - 1, 'y': b.y - 1},
-            {'x': c.x, 'y': c.y},
-            {'x': d.x + 1, 'y': d.y + 1}]
-        }else{
-            this.occupiedSquares = [{'x': a.x, 'y': a.y - 2},
-            {'x': b.x + 1, 'y': b.y - 1},
-            {'x': c.x, 'y': c.y},
-            {'x': d.x - 1, 'y': d.y + 1}]
+        const edgeCase = edgeCaseCheck(this, 9);
+        const bottomCase = bottomCaseCheck(this);
+        if(!edgeCase && !bottomCase){
+            if(a.x < b.x){
+                this.occupiedSquares = [{'x': a.x + 1, 'y': a.y + 1},
+                {'x': b.x, 'y': b.y},
+                {'x': c.x - 1, 'y': c.y - 1},
+                {'x': d.x - 2, 'y': d.y}]
+            }else if(a.x == b.x && a.y < b.y){
+                this.occupiedSquares = [{'x': a.x - 1, 'y': a.y + 1},
+                {'x': b.x, 'y': b.y},
+                {'x': c.x + 1, 'y': c.y - 1},
+                {'x': d.x, 'y': d.y - 2}]
+            }else if(a.x > b.x){
+                this.occupiedSquares = [{'x': a.x - 1, 'y': a.y - 1},
+                {'x': b.x, 'y': b.y},
+                {'x': c.x + 1, 'y': c.y + 1},
+                {'x': d.x + 2, 'y': d.y}]
+            }else{
+                this.occupiedSquares = [{'x': a.x + 1, 'y': a.y - 1},
+                {'x': b.x, 'y': b.y},
+                {'x': c.x - 1, 'y': c.y + 1},
+                {'x': d.x, 'y': d.y + 2}]
+            }
+            this.render();
         }
-        this.render();
     }
 }
 
@@ -545,15 +572,20 @@ const makeGrid = ()=>{
     }
 }
 
-const edgeCaseCheck = (obj)=>{
+const edgeCaseCheck = (obj, val)=>{
     let edgeCase = false;
     let coords = obj.occupiedSquares;
-    for(let i = 0; i < coords.length - 1; i++){
-        if(coords[i].x == coords[i+1].x && 
-            (coords[i].x == 0 || coords[coords.length - 1].x >= 8)){
-            edgeCase = true;
-        }
+    if(coords[0].x == coords[1].x && 
+        (coords[0].x == 0 || coords[0].x >= val)){
+        edgeCase = true;
     }
+
+    // for(let i = 0; i < coords.length - 1; i++){
+    //     if(coords[i].x == coords[i+1].x && 
+    //         (coords[i].x == 0 || coords[i].x >= 8)){
+    //         edgeCase = true;
+    //     }
+    // }
     return edgeCase;
 }
 
@@ -606,7 +638,7 @@ const hitOtherPiece = function(piece){
 
 const createPiece = ()=>{
     let randIndex = Math.floor(Math.random()*constructorArr.length);
-    // randIndex = 0;
+    randIndex = 2;
     const currentPiece = new constructorArr[randIndex]();
     return currentPiece;
 }
@@ -699,9 +731,10 @@ const startRoutine = (e)=>{
 
     miniInterval = setInterval(()=>{
         removeLine();
+        console.log(game.lineCounter);
         game.scoreUp();
         game.lineCounter = 0;
-    },100);
+    },200);
 }
 
 let currentPiece = createPiece();
