@@ -668,9 +668,9 @@ const whichKey = (e)=>{
 }
 
 const removeLine = ()=>{
-    let occupied = 0;
+    // let occupied = 0;
     for(let y = 19; y > -1; y--){
-        // let occupied = 0;
+        let occupied = 0;
         for(let x = 0; x < 10; x++){
             if($(`.grid-square[x="${x}"][y="${y}"]`).hasClass('bottom-piece')){
                 occupied++;
