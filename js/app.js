@@ -504,19 +504,19 @@ const game = {
         if(this.lineCounter == 1){
             this.score = this.score + (40 * this.level);
             $('#score').text(`${this.score}`);
-            this.levelUp();
+            // this.levelUp();
         }else if(this.lineCounter == 2){
             this.score = this.score + (100 * this.level);
             $('#score').text(`${this.score}`);
-            this.levelUp();
+            // this.levelUp();
         }else if(this.lineCounter == 3){
             this.score = this.score + (300 * this.level);
             $('#score').text(`${this.score}`);
-            this.levelUp();
+            // this.levelUp();
         }else if(this.lineCounter == 4){
             this.score = this.score + (1200 * this.level);
         $('#score').text(`${this.score}`);
-        this.levelUp();
+        // this.levelUp();
         }
     },
     gameOverEvent(){
@@ -596,13 +596,6 @@ const edgeCaseCheck = (obj, val)=>{
         (coords[0].x == 0 || coords[0].x >= val)){
         edgeCase = true;
     }
-
-    // for(let i = 0; i < coords.length - 1; i++){
-    //     if(coords[i].x == coords[i+1].x && 
-    //         (coords[i].x == 0 || coords[i].x >= 8)){
-    //         edgeCase = true;
-    //     }
-    // }
    return edgeCase;
 }
 
@@ -675,8 +668,9 @@ const whichKey = (e)=>{
 }
 
 const removeLine = ()=>{
+    let occupied = 0;
     for(let y = 19; y > -1; y--){
-        let occupied = 0;
+        // let occupied = 0;
         for(let x = 0; x < 10; x++){
             if($(`.grid-square[x="${x}"][y="${y}"]`).hasClass('bottom-piece')){
                 occupied++;
@@ -696,10 +690,12 @@ const removeLine = ()=>{
                 }
             }
             game.lineCounter++;
+            game.scoreUp();
             game.linesPerLevel++;
             $('#lines').text(`${game.linesPerLevel}`);
         }
     }
+    // console.log(occupied);
 }
 
 // const makeNextGrid = ()=>{
@@ -721,6 +717,8 @@ const removeLine = ()=>{
 //         $(`.mini-square[x="${nextPiece.occupiedSquares[i].x}"][y="${nextPiece.occupiedSquares[i].y}"]`).text('next').addClass('next-piece');
 //     }
 // }
+
+
 
 const startRoutine = (e)=>{
     timeInterval = setInterval(()=>{
@@ -747,8 +745,15 @@ const startRoutine = (e)=>{
     }, game.speed);
 
     miniInterval = setInterval(()=>{
+        // let now1 = Date.now();
+        // console.log(now);
         removeLine();
-        console.log(game.lineCounter);
+        // let now2 = Date.now();
+        // if(now2 >= now1 + 20){
+        //     // console.log(now1,now2);
+            console.log(game.lineCounter);
+        // }
+        
         game.scoreUp();
         game.lineCounter = 0;
     },200);
